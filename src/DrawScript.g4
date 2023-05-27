@@ -1,10 +1,12 @@
 grammar DrawScript;
 
-program: header* delimiter;
+program: header* delimiter  parameter* delimiter;
 
-parameter:lowid=PARAMETERID ':' exp1 = value PARAMETERSEPARATOR exp2 = value;
+parameter: parid = PARAMETERID ':' parvalue= parametervalue;
 
 header: id=ID ':' val=value;
+
+parametervalue: ID |(ID|N) (OPERATOR (ID|N))* PARAMETERSEPARATOR (ID|N) (OPERATOR (ID|N))*;
 
 value:N|r g? b?;
 delimiter: '---';
@@ -13,7 +15,7 @@ r: COLOR;
 g:COLOR;
 b:COLOR;
 
-PARAMETERID: [a-z];
+PARAMETERID: [a-z]+;
 ID:[A-Z]+;
 N: [0-9]+;
 COLOR:  '|' [0-9]+ '|';
