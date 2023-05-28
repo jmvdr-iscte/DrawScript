@@ -1,4 +1,0 @@
-package constants
-
-interface Constants {
-}

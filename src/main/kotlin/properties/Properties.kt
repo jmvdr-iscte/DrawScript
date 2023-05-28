@@ -1,2 +1,4 @@
+package properties
+
 interface Properties {
 }

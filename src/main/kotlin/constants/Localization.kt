@@ -6,7 +6,7 @@ data class Localization (
     val xValue: Expression,
     val yValue: Expression
 
-): Constants{
+): Constant{
 
     fun getY(): Expression {
         return yValue

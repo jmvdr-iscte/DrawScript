@@ -1,37 +1,41 @@
 grammar DrawScript;
 
-program: header* delimiter parameter* delimiter instruction*;
+program: constant* delimiter property* delimiter instruction*;
 
-parameter: parid = PARAMETERID ':' parvalue= parametervalue;
+property: propid = PROPERTYID ':' propvalue= propertyvalue;
 
 instruction : declaration| forLoop | ifStatement | elseStatement | geometricobjectsdec| ENDINSTRUCTION;
 
-ifStatement: 'if' condition EQUALSOPERATOR conditionResult = (N | ID | PARAMETERID);
+ifStatement: 'if' condition EQUALSOPERATOR conditionResult = (N | ID | PROPERTYID);
 
 elseStatement: 'else';
 
-declaration : id=PARAMETERID  declarationvall;
-geometricobjectsdec: id = PARAMETERID geometricobjects;
+declaration : id=PROPERTYID  declarationvall= declarationvalue;
 
-declarationvall: decvalue;
+geometricobjectsdec: id = PROPERTYID geometricobjects;
 
-header: id=ID ':' val=value;
+declarationvalue: decvalue;
 
-parametervalue: ID |(ID|N) (OPERATOR (ID|N))* PARAMETERSEPARATOR (ID|N) (OPERATOR (ID|N))*;
+constant: id=ID ':' val=value;
+
+propertyvalue: ID |(ID|N) (OPERATOR (ID|N))* PROPERTYSEPARATOR (ID|N) (OPERATOR (ID|N))*;
 
 geometricobjects: xexpression INTERVALSEPARATION yexpression;
 
-xexpression:(ID|PARAMETERID|N) ((OPERATOR|PARAMETERSEPARATOR)? (ID|N|PARAMETERID))*;
+xexpression:(ID|PROPERTYID|N) ((OPERATOR|PROPERTYSEPARATOR)? (ID|N|PROPERTYID))*;
 
-yexpression: (ID|PARAMETERID|N) ((OPERATOR|PARAMETERSEPARATOR)? (ID|N|PARAMETERID))*;
+yexpression: (ID|PROPERTYID|N) ((OPERATOR|PROPERTYSEPARATOR)? (ID|N|PROPERTYID))*;
 
-forLoop: 'for' PARAMETERID 'in' interval;
+forLoop: 'for' PROPERTYID 'in' interval;
 
-decvalue:N|ID|r g? b?;
+decvalue:N|ID|linevalue;
+
+linevalue : LINECOLOR;
+
 
 condition: expression OPERATOR expression;
 
-expression: OPENPARENTESIS? (PARAMETERID | ID | N) (OPERATOR (PARAMETERID | ID | N)) * CLOSEDPARENTESIS?;
+expression: OPENPARENTESIS? (PROPERTYID | ID | N) (OPERATOR (PROPERTYID | ID | N)) * CLOSEDPARENTESIS?;
 
 interval: '[' (N|ID) INTERVALSEPARATION (N|ID) '[';
 
@@ -43,13 +47,14 @@ r:COLOR;
 g:COLOR;
 b:COLOR;
 
-PARAMETERID: [a-z]+;
+PROPERTYID: [a-z]+;
 ID:[A-Z]+;
 N: [0-9]+;
 COLOR:  '|' [0-9]+ '|';
+LINECOLOR: [0-9]+ '|' [0-9]+ '|' [0-9]+;
 WS: [ \t\r\n]+ -> skip;
 OPERATOR: '*' | '-' | '+' | '/' | '%';
-PARAMETERSEPARATOR: '~';
+PROPERTYSEPARATOR: '~';
 ENDINSTRUCTION: '_';
 INTERVALSEPARATION: ',';
 EQUALSOPERATOR: '=';
