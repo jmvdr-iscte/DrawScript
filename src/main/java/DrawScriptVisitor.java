@@ -10,11 +10,29 @@ import org.antlr.v4.runtime.tree.ParseTreeVisitor;
  */
 public interface DrawScriptVisitor<T> extends ParseTreeVisitor<T> {
 	/**
-	 * Visit a parse tree produced by {@link DrawScriptParser#program}.
+	 * Visit a parse tree produced by {@link DrawScriptParser#script}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
-	T visitProgram(DrawScriptParser.ProgramContext ctx);
+	T visitScript(DrawScriptParser.ScriptContext ctx);
+	/**
+	 * Visit a parse tree produced by {@link DrawScriptParser#constantList}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitConstantList(DrawScriptParser.ConstantListContext ctx);
+	/**
+	 * Visit a parse tree produced by {@link DrawScriptParser#propertyList}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitPropertyList(DrawScriptParser.PropertyListContext ctx);
+	/**
+	 * Visit a parse tree produced by {@link DrawScriptParser#instructionList}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitInstructionList(DrawScriptParser.InstructionListContext ctx);
 	/**
 	 * Visit a parse tree produced by {@link DrawScriptParser#property}.
 	 * @param ctx the parse tree

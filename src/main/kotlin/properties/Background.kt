@@ -1,12 +1,9 @@
 package properties
 
-import constants.Constant
+import types.Type
 
 data class Background (
-    val color: Constant
+    val color: Type
 ){
-    fun getColor():Constant{
-        return color
-    }
 
 }

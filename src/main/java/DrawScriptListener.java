@@ -7,15 +7,45 @@ import org.antlr.v4.runtime.tree.ParseTreeListener;
  */
 public interface DrawScriptListener extends ParseTreeListener {
 	/**
-	 * Enter a parse tree produced by {@link DrawScriptParser#program}.
+	 * Enter a parse tree produced by {@link DrawScriptParser#script}.
 	 * @param ctx the parse tree
 	 */
-	void enterProgram(DrawScriptParser.ProgramContext ctx);
+	void enterScript(DrawScriptParser.ScriptContext ctx);
 	/**
-	 * Exit a parse tree produced by {@link DrawScriptParser#program}.
+	 * Exit a parse tree produced by {@link DrawScriptParser#script}.
 	 * @param ctx the parse tree
 	 */
-	void exitProgram(DrawScriptParser.ProgramContext ctx);
+	void exitScript(DrawScriptParser.ScriptContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link DrawScriptParser#constantList}.
+	 * @param ctx the parse tree
+	 */
+	void enterConstantList(DrawScriptParser.ConstantListContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link DrawScriptParser#constantList}.
+	 * @param ctx the parse tree
+	 */
+	void exitConstantList(DrawScriptParser.ConstantListContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link DrawScriptParser#propertyList}.
+	 * @param ctx the parse tree
+	 */
+	void enterPropertyList(DrawScriptParser.PropertyListContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link DrawScriptParser#propertyList}.
+	 * @param ctx the parse tree
+	 */
+	void exitPropertyList(DrawScriptParser.PropertyListContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link DrawScriptParser#instructionList}.
+	 * @param ctx the parse tree
+	 */
+	void enterInstructionList(DrawScriptParser.InstructionListContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link DrawScriptParser#instructionList}.
+	 * @param ctx the parse tree
+	 */
+	void exitInstructionList(DrawScriptParser.InstructionListContext ctx);
 	/**
 	 * Enter a parse tree produced by {@link DrawScriptParser#property}.
 	 * @param ctx the parse tree

@@ -1,0 +1,4 @@
+package properties
+
+interface Property {
+}

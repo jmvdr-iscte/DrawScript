@@ -1,6 +1,12 @@
 grammar DrawScript;
 
-program: constant* delimiter property* delimiter instruction*;
+script: constantList delimiter propertyList delimiter instructionList;
+
+constantList: constant | constantList constant;
+
+propertyList : property | propertyList property;
+
+instructionList: instruction | instructionList instruction;
 
 property: propid = PROPERTYID ':' propvalue= propertyvalue;
 
@@ -16,7 +22,7 @@ geometricobjectsdec: id = PROPERTYID geometricobjects;
 
 declarationvalue: decvalue;
 
-constant: id=ID ':' val=value;
+constant: constid=ID ':' constval=value;
 
 propertyvalue: ID |(ID|N) (OPERATOR (ID|N))* PROPERTYSEPARATOR (ID|N) (OPERATOR (ID|N))*;
 
@@ -39,7 +45,7 @@ expression: OPENPARENTESIS? (PROPERTYID | ID | N) (OPERATOR (PROPERTYID | ID | N
 
 interval: '[' (N|ID) INTERVALSEPARATION (N|ID) '[';
 
-value:N|r g? b?;
+value:N|(r g? b?);
 
 delimiter: '---';
 
@@ -50,7 +56,7 @@ b:COLOR;
 PROPERTYID: [a-z]+;
 ID:[A-Z]+;
 N: [0-9]+;
-COLOR:  '|' [0-9]+ '|';
+COLOR:  '|'? [0-9]+ '|'?;
 LINECOLOR: [0-9]+ '|' [0-9]+ '|' [0-9]+;
 WS: [ \t\r\n]+ -> skip;
 OPERATOR: '*' | '-' | '+' | '/' | '%';

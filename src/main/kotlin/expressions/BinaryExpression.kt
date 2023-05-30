@@ -9,5 +9,4 @@ data class BinaryExpression(
     override fun toString(): String {
         return "${left} $operator ${right}"
     }
-
 }

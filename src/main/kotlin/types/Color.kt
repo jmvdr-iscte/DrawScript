@@ -1,10 +1,10 @@
-package constants
+package types
 
 import expressions.Expression
 
-data class Color (
+data class Color(
     val rValue: Expression,
     val gValue: Expression?,
     val bValue: Expression?,
-): Constant {
+) : Type {
 }

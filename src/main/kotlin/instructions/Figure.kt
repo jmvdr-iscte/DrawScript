@@ -1,6 +1,6 @@
 package instructions
 
-import constants.Localization
+import types.Localization
 import expressions.Expression
 
 open class Figure(
