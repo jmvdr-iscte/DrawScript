@@ -76,6 +76,30 @@ public class DrawScriptBaseListener implements DrawScriptListener {
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
+	@Override public void enterDimension(DrawScriptParser.DimensionContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitDimension(DrawScriptParser.DimensionContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void enterBackground(DrawScriptParser.BackgroundContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitBackground(DrawScriptParser.BackgroundContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
 	@Override public void enterInstruction(DrawScriptParser.InstructionContext ctx) { }
 	/**
 	 * {@inheritDoc}
@@ -83,18 +107,6 @@ public class DrawScriptBaseListener implements DrawScriptListener {
 	 * <p>The default implementation does nothing.</p>
 	 */
 	@Override public void exitInstruction(DrawScriptParser.InstructionContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
-	@Override public void enterIfStatement(DrawScriptParser.IfStatementContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
-	@Override public void exitIfStatement(DrawScriptParser.IfStatementContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
@@ -124,30 +136,6 @@ public class DrawScriptBaseListener implements DrawScriptListener {
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterGeometricobjectsdec(DrawScriptParser.GeometricobjectsdecContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
-	@Override public void exitGeometricobjectsdec(DrawScriptParser.GeometricobjectsdecContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
-	@Override public void enterDeclarationvalue(DrawScriptParser.DeclarationvalueContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
-	@Override public void exitDeclarationvalue(DrawScriptParser.DeclarationvalueContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
 	@Override public void enterConstant(DrawScriptParser.ConstantContext ctx) { }
 	/**
 	 * {@inheritDoc}
@@ -155,54 +143,6 @@ public class DrawScriptBaseListener implements DrawScriptListener {
 	 * <p>The default implementation does nothing.</p>
 	 */
 	@Override public void exitConstant(DrawScriptParser.ConstantContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
-	@Override public void enterPropertyvalue(DrawScriptParser.PropertyvalueContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
-	@Override public void exitPropertyvalue(DrawScriptParser.PropertyvalueContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
-	@Override public void enterGeometricobjects(DrawScriptParser.GeometricobjectsContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
-	@Override public void exitGeometricobjects(DrawScriptParser.GeometricobjectsContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
-	@Override public void enterXexpression(DrawScriptParser.XexpressionContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
-	@Override public void exitXexpression(DrawScriptParser.XexpressionContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
-	@Override public void enterYexpression(DrawScriptParser.YexpressionContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
-	@Override public void exitYexpression(DrawScriptParser.YexpressionContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
@@ -220,18 +160,6 @@ public class DrawScriptBaseListener implements DrawScriptListener {
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterDecvalue(DrawScriptParser.DecvalueContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
-	@Override public void exitDecvalue(DrawScriptParser.DecvalueContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
 	@Override public void enterLinevalue(DrawScriptParser.LinevalueContext ctx) { }
 	/**
 	 * {@inheritDoc}
@@ -239,18 +167,6 @@ public class DrawScriptBaseListener implements DrawScriptListener {
 	 * <p>The default implementation does nothing.</p>
 	 */
 	@Override public void exitLinevalue(DrawScriptParser.LinevalueContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
-	@Override public void enterCondition(DrawScriptParser.ConditionContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
-	@Override public void exitCondition(DrawScriptParser.ConditionContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *

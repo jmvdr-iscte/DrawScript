@@ -6,7 +6,5 @@ data class Constant(
     val identity: String,
     val value: Type
 ){
-    fun getId(): String{
-        return identity
-    }
+
 }

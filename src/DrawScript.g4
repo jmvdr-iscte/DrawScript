@@ -8,44 +8,49 @@ propertyList : property | propertyList property;
 
 instructionList: instruction | instructionList instruction;
 
-property: propid = PROPERTYID ':' propvalue= propertyvalue;
+property: propid = PROPERTYID ':' (dimension|background);
 
-instruction : declaration| forLoop | ifStatement | elseStatement | geometricobjectsdec| ENDINSTRUCTION;
+dimension: expression PROPERTYSEPARATOR expression;
 
-ifStatement: 'if' condition EQUALSOPERATOR conditionResult = (N | ID | PROPERTYID);
+background: expression;
+
+instruction : declaration;//| forLoop ;// |ifStatement | elseStatement | geometricobjectsdec| ENDINSTRUCTION;
+
+//ifStatement: 'if' condition EQUALS conditionResult = (N | ID | PROPERTYID);
 
 elseStatement: 'else';
 
-declaration : id=PROPERTYID  declarationvall= declarationvalue;
+declaration : id=PROPERTYID  (expression|(r g b));
 
-geometricobjectsdec: id = PROPERTYID geometricobjects;
-
-declarationvalue: decvalue;
+//geometricobjectsdec: id = PROPERTYID geometricobjects;
 
 constant: constid=ID ':' constval=value;
 
-propertyvalue: ID |(ID|N) (OPERATOR (ID|N))* PROPERTYSEPARATOR (ID|N) (OPERATOR (ID|N))*;
+//geometricobjects: xexpression INTERVALSEPARATION yexpression;
 
-geometricobjects: xexpression INTERVALSEPARATION yexpression;
+//xexpression:(ID|PROPERTYID|N) ((OPERATOR|PROPERTYSEPARATOR)? (ID|N|PROPERTYID))*;
 
-xexpression:(ID|PROPERTYID|N) ((OPERATOR|PROPERTYSEPARATOR)? (ID|N|PROPERTYID))*;
-
-yexpression: (ID|PROPERTYID|N) ((OPERATOR|PROPERTYSEPARATOR)? (ID|N|PROPERTYID))*;
+//yexpression: (ID|PROPERTYID|N) ((OPERATOR|PROPERTYSEPARATOR)? (ID|N|PROPERTYID))*;
 
 forLoop: 'for' PROPERTYID 'in' interval;
 
-decvalue:N|ID|linevalue;
 
 linevalue : LINECOLOR;
 
+expression: ID|N|
+                expression PLUS expression|
+                expression MINUS expression|
+                expression DIVIDE expression|
+                expression TIMES expression;
 
-condition: expression OPERATOR expression;
 
-expression: OPENPARENTESIS? (PROPERTYID | ID | N) (OPERATOR (PROPERTYID | ID | N)) * CLOSEDPARENTESIS?;
+//condition: expression OPERATOR expression;
+
+//expression: OPENPARENTESIS? (PROPERTYID | ID | N) (OPERATOR (PROPERTYID | ID | N)) * CLOSEDPARENTESIS?;
 
 interval: '[' (N|ID) INTERVALSEPARATION (N|ID) '[';
 
-value:N|(r g? b?);
+value:ID|N|(r g? b?);
 
 delimiter: '---';
 
@@ -59,10 +64,14 @@ N: [0-9]+;
 COLOR:  '|'? [0-9]+ '|'?;
 LINECOLOR: [0-9]+ '|' [0-9]+ '|' [0-9]+;
 WS: [ \t\r\n]+ -> skip;
-OPERATOR: '*' | '-' | '+' | '/' | '%';
+//OPERATOR: '*' | '-' | '+' | '/' | '%';
+PLUS:'+';
+MINUS:'-';
+TIMES:'*';
+DIVIDE:'/';
 PROPERTYSEPARATOR: '~';
 ENDINSTRUCTION: '_';
 INTERVALSEPARATION: ',';
-EQUALSOPERATOR: '=';
+EQUALS: '=';
 OPENPARENTESIS:'(';
 CLOSEDPARENTESIS:')';
