@@ -34,6 +34,30 @@ public interface DrawScriptVisitor<T> extends ParseTreeVisitor<T> {
 	 */
 	T visitInstructionList(DrawScriptParser.InstructionListContext ctx);
 	/**
+	 * Visit a parse tree produced by {@link DrawScriptParser#instruction}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitInstruction(DrawScriptParser.InstructionContext ctx);
+	/**
+	 * Visit a parse tree produced by {@link DrawScriptParser#controlStructure}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitControlStructure(DrawScriptParser.ControlStructureContext ctx);
+	/**
+	 * Visit a parse tree produced by {@link DrawScriptParser#ifStatement}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitIfStatement(DrawScriptParser.IfStatementContext ctx);
+	/**
+	 * Visit a parse tree produced by {@link DrawScriptParser#forLoop}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitForLoop(DrawScriptParser.ForLoopContext ctx);
+	/**
 	 * Visit a parse tree produced by {@link DrawScriptParser#property}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
@@ -52,18 +76,6 @@ public interface DrawScriptVisitor<T> extends ParseTreeVisitor<T> {
 	 */
 	T visitBackground(DrawScriptParser.BackgroundContext ctx);
 	/**
-	 * Visit a parse tree produced by {@link DrawScriptParser#instruction}.
-	 * @param ctx the parse tree
-	 * @return the visitor result
-	 */
-	T visitInstruction(DrawScriptParser.InstructionContext ctx);
-	/**
-	 * Visit a parse tree produced by {@link DrawScriptParser#elseStatement}.
-	 * @param ctx the parse tree
-	 * @return the visitor result
-	 */
-	T visitElseStatement(DrawScriptParser.ElseStatementContext ctx);
-	/**
 	 * Visit a parse tree produced by {@link DrawScriptParser#declaration}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
@@ -75,18 +87,6 @@ public interface DrawScriptVisitor<T> extends ParseTreeVisitor<T> {
 	 * @return the visitor result
 	 */
 	T visitConstant(DrawScriptParser.ConstantContext ctx);
-	/**
-	 * Visit a parse tree produced by {@link DrawScriptParser#forLoop}.
-	 * @param ctx the parse tree
-	 * @return the visitor result
-	 */
-	T visitForLoop(DrawScriptParser.ForLoopContext ctx);
-	/**
-	 * Visit a parse tree produced by {@link DrawScriptParser#linevalue}.
-	 * @param ctx the parse tree
-	 * @return the visitor result
-	 */
-	T visitLinevalue(DrawScriptParser.LinevalueContext ctx);
 	/**
 	 * Visit a parse tree produced by {@link DrawScriptParser#expression}.
 	 * @param ctx the parse tree

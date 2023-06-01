@@ -1,0 +1,4 @@
+package controlstructures
+
+interface ControlStructure {
+}

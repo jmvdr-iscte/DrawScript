@@ -1,4 +1,6 @@
 import constants.Constant
+import controlstructures.ForLoop
+import controlstructures.IfElse
 import expressions.*
 import instructions.Declaration
 import instructions.Instruction
@@ -7,10 +9,7 @@ import org.antlr.v4.runtime.CommonTokenStream
 import properties.Background
 import properties.Dimension
 import properties.Property
-import types.Color
-import types.Integer
-import types.Text
-import types.Type
+import types.*
 
 fun DrawScriptParser.ScriptContext.toAst(): Script {
     return Script(this.constantList().toAst(), this.propertyList().toAst(), this.instructionList().toAst())
@@ -91,6 +90,18 @@ fun DrawScriptParser.ExpressionContext.toAst(): Expression {
             BinaryExpression(left, Operator.TIMES, right)
         }
 
+        MOD() != null -> {
+            val left = expression(0).toAst()
+            val right = expression(1).toAst()
+            BinaryExpression(left, Operator.MOD, right)
+        }
+
+        EQUALS() != null -> {
+            val left = expression(0).toAst()
+            val right = expression(1).toAst()
+            BinaryExpression(left, Operator.EQUAL, right)
+        }
+
         else -> {
             throw IllegalArgumentException("Invalid Operator")
         }
@@ -125,23 +136,81 @@ fun DrawScriptParser.InstructionListContext.toAst(): List<Instruction> {
 }
 
 fun DrawScriptParser.InstructionContext.toAst(): Instruction {
-    if (declaration().expression() != null) {
-        val identity = declaration().id.text
-        val value = declaration().expression().toAst()
-        return Declaration(identity, Text(value))
+    return when {
+        declaration() != null && declaration().expression() != null -> {
+            val identity = declaration().id.text
+            val value = declaration().expression().toAst()
+            Declaration(identity, Text(value))
+        }
+
+        declaration() != null && declaration().r() != null && declaration().g() != null && declaration().b() != null -> {
+            val identity = declaration().id.text
+            val rValue = declaration().r()
+            val gValue = declaration().g()
+            val bValue = declaration().b()
+            Declaration(
+                identity,
+                Color(
+                    Literal(parseColor(rValue.text)),
+                    Literal(parseColor(gValue.text)),
+                    Literal(parseColor(bValue.text))
+                )
+            )
+        }
+
+        controlStructure() != null -> {
+            controlStructure().toAst()
+        }
+
+        else -> {
+            throw IllegalArgumentException("Invalid Instruction")
+        }
     }
-    val identity = declaration().id.text
-    val rValue = declaration().r()
-    val gValue = declaration().g()
-    val bValue = declaration().b()
-    return Declaration(
-        identity,
-        Color(Literal(parseColor(rValue.text)), Literal(parseColor(gValue.text)), Literal(parseColor(bValue.text))))
+}
+
+fun DrawScriptParser.ControlStructureContext.toAst(): Instruction {
+    return when {
+        ifStatement() != null -> {
+            val ifStatement = ifStatement()
+            val guard = ifStatement.expression().toAst()
+
+            val instructions = ifStatement.instructionList().toAst()
+            IfElse(guard, instructions)
+        }
+
+        forLoop() != null -> {
+            val forLoop = forLoop()
+            val loopVariable = forLoop.PROPERTYID().text
+            val lowerLimit = forLoop.interval().expression(0).toAst()
+            val higherLimit = forLoop.interval().expression(1).toAst()
+            val sequence = forLoop.instructionList().toAst()
+            ForLoop(Variable(loopVariable), Interval(lowerLimit, higherLimit), sequence, null)
+        }
+
+        else -> {
+            throw IllegalArgumentException("Invalid Control Structure")
+        }
+    }
 }
 
 fun main() {
-    val input =
-        "N: 8\n" + "SIDE: 40\n" + "MARGIN: 5\n" + "BLACK: |0|\n" + "WHITE: |255|\n" + "GRAY: |128|\n" + "---\n" + "dimension: N*SIDE + MARGIN*2 ~ N*SIDE + MARGIN*2\n" + "background: GRAY\n" + "---\n" + "color BLACK\n" + "line |9|89|8|"
+    val input = "N: 8\n" +
+            "SIDE: 40\n" +
+            "MARGIN: 5\n" +
+            "BLACK: |0|\n" +
+            "WHITE: |255|\n" +
+            "GRAY: |128|\n" +
+            "---\n" +
+            "dimension: N*SIDE + MARGIN*2 ~ N*SIDE + MARGIN*2\n" +
+            "background: GRAY\n" +
+            "---\n" +
+            "color BLACK\n" +
+            " if ( i+5 % 2 = 0)\n" +
+            "fill WHITE\n" +
+            "fill BLACK\n" +
+            " _\n"
+
+
     val lexer = DrawScriptLexer(CharStreams.fromString(input))
     val parser = DrawScriptParser(CommonTokenStream(lexer))
     val script = parser.script()

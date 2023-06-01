@@ -47,6 +47,46 @@ public interface DrawScriptListener extends ParseTreeListener {
 	 */
 	void exitInstructionList(DrawScriptParser.InstructionListContext ctx);
 	/**
+	 * Enter a parse tree produced by {@link DrawScriptParser#instruction}.
+	 * @param ctx the parse tree
+	 */
+	void enterInstruction(DrawScriptParser.InstructionContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link DrawScriptParser#instruction}.
+	 * @param ctx the parse tree
+	 */
+	void exitInstruction(DrawScriptParser.InstructionContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link DrawScriptParser#controlStructure}.
+	 * @param ctx the parse tree
+	 */
+	void enterControlStructure(DrawScriptParser.ControlStructureContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link DrawScriptParser#controlStructure}.
+	 * @param ctx the parse tree
+	 */
+	void exitControlStructure(DrawScriptParser.ControlStructureContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link DrawScriptParser#ifStatement}.
+	 * @param ctx the parse tree
+	 */
+	void enterIfStatement(DrawScriptParser.IfStatementContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link DrawScriptParser#ifStatement}.
+	 * @param ctx the parse tree
+	 */
+	void exitIfStatement(DrawScriptParser.IfStatementContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link DrawScriptParser#forLoop}.
+	 * @param ctx the parse tree
+	 */
+	void enterForLoop(DrawScriptParser.ForLoopContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link DrawScriptParser#forLoop}.
+	 * @param ctx the parse tree
+	 */
+	void exitForLoop(DrawScriptParser.ForLoopContext ctx);
+	/**
 	 * Enter a parse tree produced by {@link DrawScriptParser#property}.
 	 * @param ctx the parse tree
 	 */
@@ -77,26 +117,6 @@ public interface DrawScriptListener extends ParseTreeListener {
 	 */
 	void exitBackground(DrawScriptParser.BackgroundContext ctx);
 	/**
-	 * Enter a parse tree produced by {@link DrawScriptParser#instruction}.
-	 * @param ctx the parse tree
-	 */
-	void enterInstruction(DrawScriptParser.InstructionContext ctx);
-	/**
-	 * Exit a parse tree produced by {@link DrawScriptParser#instruction}.
-	 * @param ctx the parse tree
-	 */
-	void exitInstruction(DrawScriptParser.InstructionContext ctx);
-	/**
-	 * Enter a parse tree produced by {@link DrawScriptParser#elseStatement}.
-	 * @param ctx the parse tree
-	 */
-	void enterElseStatement(DrawScriptParser.ElseStatementContext ctx);
-	/**
-	 * Exit a parse tree produced by {@link DrawScriptParser#elseStatement}.
-	 * @param ctx the parse tree
-	 */
-	void exitElseStatement(DrawScriptParser.ElseStatementContext ctx);
-	/**
 	 * Enter a parse tree produced by {@link DrawScriptParser#declaration}.
 	 * @param ctx the parse tree
 	 */
@@ -116,26 +136,6 @@ public interface DrawScriptListener extends ParseTreeListener {
 	 * @param ctx the parse tree
 	 */
 	void exitConstant(DrawScriptParser.ConstantContext ctx);
-	/**
-	 * Enter a parse tree produced by {@link DrawScriptParser#forLoop}.
-	 * @param ctx the parse tree
-	 */
-	void enterForLoop(DrawScriptParser.ForLoopContext ctx);
-	/**
-	 * Exit a parse tree produced by {@link DrawScriptParser#forLoop}.
-	 * @param ctx the parse tree
-	 */
-	void exitForLoop(DrawScriptParser.ForLoopContext ctx);
-	/**
-	 * Enter a parse tree produced by {@link DrawScriptParser#linevalue}.
-	 * @param ctx the parse tree
-	 */
-	void enterLinevalue(DrawScriptParser.LinevalueContext ctx);
-	/**
-	 * Exit a parse tree produced by {@link DrawScriptParser#linevalue}.
-	 * @param ctx the parse tree
-	 */
-	void exitLinevalue(DrawScriptParser.LinevalueContext ctx);
 	/**
 	 * Enter a parse tree produced by {@link DrawScriptParser#expression}.
 	 * @param ctx the parse tree

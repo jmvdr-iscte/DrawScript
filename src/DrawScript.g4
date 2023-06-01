@@ -8,47 +8,35 @@ propertyList : property | propertyList property;
 
 instructionList: instruction | instructionList instruction;
 
+instruction: declaration | controlStructure;
+
+controlStructure: ifStatement | forLoop;
+
+ifStatement: 'if' expression instructionList ENDINSTRUCTION;
+
+forLoop: 'for' PROPERTYID 'in' interval instructionList ENDINSTRUCTION;
+
 property: propid = PROPERTYID ':' (dimension|background);
 
 dimension: expression PROPERTYSEPARATOR expression;
 
 background: expression;
 
-instruction : declaration;//| forLoop ;// |ifStatement | elseStatement | geometricobjectsdec| ENDINSTRUCTION;
-
-//ifStatement: 'if' condition EQUALS conditionResult = (N | ID | PROPERTYID);
-
-elseStatement: 'else';
-
 declaration : id=PROPERTYID  (expression|(r g b));
-
-//geometricobjectsdec: id = PROPERTYID geometricobjects;
 
 constant: constid=ID ':' constval=value;
 
-//geometricobjects: xexpression INTERVALSEPARATION yexpression;
-
-//xexpression:(ID|PROPERTYID|N) ((OPERATOR|PROPERTYSEPARATOR)? (ID|N|PROPERTYID))*;
-
-//yexpression: (ID|PROPERTYID|N) ((OPERATOR|PROPERTYSEPARATOR)? (ID|N|PROPERTYID))*;
-
-forLoop: 'for' PROPERTYID 'in' interval;
-
-
-linevalue : LINECOLOR;
-
-expression: ID|N|
+expression: ID|N|PROPERTYID|
+                (OPENPARENTESIS expression CLOSEDPARENTESIS)|
                 expression PLUS expression|
                 expression MINUS expression|
                 expression DIVIDE expression|
-                expression TIMES expression;
+                expression TIMES expression|
+                expression MOD expression|
+                expression EQUALS expression;
 
 
-//condition: expression OPERATOR expression;
-
-//expression: OPENPARENTESIS? (PROPERTYID | ID | N) (OPERATOR (PROPERTYID | ID | N)) * CLOSEDPARENTESIS?;
-
-interval: '[' (N|ID) INTERVALSEPARATION (N|ID) '[';
+interval: '[' expression INTERVALSEPARATION expression '[';
 
 value:ID|N|(r g? b?);
 
@@ -62,13 +50,12 @@ PROPERTYID: [a-z]+;
 ID:[A-Z]+;
 N: [0-9]+;
 COLOR:  '|'? [0-9]+ '|'?;
-LINECOLOR: [0-9]+ '|' [0-9]+ '|' [0-9]+;
 WS: [ \t\r\n]+ -> skip;
-//OPERATOR: '*' | '-' | '+' | '/' | '%';
 PLUS:'+';
 MINUS:'-';
 TIMES:'*';
 DIVIDE:'/';
+MOD: '%';
 PROPERTYSEPARATOR: '~';
 ENDINSTRUCTION: '_';
 INTERVALSEPARATION: ',';
