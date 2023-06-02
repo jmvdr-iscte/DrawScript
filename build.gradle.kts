@@ -12,7 +12,7 @@ repositories {
 
 dependencies {
     testImplementation(kotlin("test"))
-    implementation("org.antlr:antlr4:4.11.1")
+    implementation("org.antlr:antlr4:4.12.0")
     implementation("org.ow2.asm:asm:9.2")
     implementation(kotlin("stdlib-jdk8"))
 

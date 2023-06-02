@@ -12,7 +12,7 @@ instruction: declaration | controlStructure;
 
 controlStructure: ifStatement | forLoop;
 
-ifStatement: 'if' expression instructionList ENDINSTRUCTION;
+ifStatement: 'if' expression instructionList  ENDINSTRUCTION;
 
 forLoop: 'for' PROPERTYID 'in' interval instructionList ENDINSTRUCTION;
 
@@ -27,12 +27,12 @@ declaration : id=PROPERTYID  (expression|(r g b));
 constant: constid=ID ':' constval=value;
 
 expression: ID|N|PROPERTYID|
-                (OPENPARENTESIS expression CLOSEDPARENTESIS)|
+                OPENPARENTESIS expression CLOSEDPARENTESIS expression|
+                expression MOD expression|
                 expression PLUS expression|
                 expression MINUS expression|
                 expression DIVIDE expression|
                 expression TIMES expression|
-                expression MOD expression|
                 expression EQUALS expression;
 
 
@@ -50,15 +50,15 @@ PROPERTYID: [a-z]+;
 ID:[A-Z]+;
 N: [0-9]+;
 COLOR:  '|'? [0-9]+ '|'?;
-WS: [ \t\r\n]+ -> skip;
 PLUS:'+';
 MINUS:'-';
 TIMES:'*';
 DIVIDE:'/';
 MOD: '%';
+EQUALS: '=';
+WS: [ \t\r\n]+ -> skip;
 PROPERTYSEPARATOR: '~';
 ENDINSTRUCTION: '_';
 INTERVALSEPARATION: ',';
-EQUALS: '=';
-OPENPARENTESIS:'(';
-CLOSEDPARENTESIS:')';
+OPENPARENTESIS:'(' ->skip;
+CLOSEDPARENTESIS:')' -> skip;

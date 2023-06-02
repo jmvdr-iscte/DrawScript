@@ -866,14 +866,17 @@ public class DrawScriptParser extends Parser {
 			((DeclarationContext)_localctx).id = match(PROPERTYID);
 			setState(114);
 			_errHandler.sync(this);
-			switch ( getInterpreter().adaptivePredict(_input,6,_ctx) ) {
-			case 1:
+			switch (_input.LA(1)) {
+			case PROPERTYID:
+			case ID:
+			case N:
+			case OPENPARENTESIS:
 				{
 				setState(109);
 				expression(0);
 				}
 				break;
-			case 2:
+			case COLOR:
 				{
 				{
 				setState(110);
@@ -885,6 +888,8 @@ public class DrawScriptParser extends Parser {
 				}
 				}
 				break;
+			default:
+				throw new NoViableAltException(this);
 			}
 			}
 		}
@@ -964,11 +969,11 @@ public class DrawScriptParser extends Parser {
 			return getRuleContext(ExpressionContext.class,i);
 		}
 		public TerminalNode CLOSEDPARENTESIS() { return getToken(DrawScriptParser.CLOSEDPARENTESIS, 0); }
+		public TerminalNode MOD() { return getToken(DrawScriptParser.MOD, 0); }
 		public TerminalNode PLUS() { return getToken(DrawScriptParser.PLUS, 0); }
 		public TerminalNode MINUS() { return getToken(DrawScriptParser.MINUS, 0); }
 		public TerminalNode DIVIDE() { return getToken(DrawScriptParser.DIVIDE, 0); }
 		public TerminalNode TIMES() { return getToken(DrawScriptParser.TIMES, 0); }
-		public TerminalNode MOD() { return getToken(DrawScriptParser.MOD, 0); }
 		public TerminalNode EQUALS() { return getToken(DrawScriptParser.EQUALS, 0); }
 		public ExpressionContext(ParserRuleContext parent, int invokingState) {
 			super(parent, invokingState);
@@ -1006,27 +1011,26 @@ public class DrawScriptParser extends Parser {
 			{
 			setState(129);
 			_errHandler.sync(this);
-			switch ( getInterpreter().adaptivePredict(_input,7,_ctx) ) {
-			case 1:
+			switch (_input.LA(1)) {
+			case ID:
 				{
 				setState(121);
 				match(ID);
 				}
 				break;
-			case 2:
+			case N:
 				{
 				setState(122);
 				match(N);
 				}
 				break;
-			case 3:
+			case PROPERTYID:
 				{
 				setState(123);
 				match(PROPERTYID);
 				}
 				break;
-			case 4:
-				{
+			case OPENPARENTESIS:
 				{
 				setState(124);
 				match(OPENPARENTESIS);
@@ -1034,13 +1038,12 @@ public class DrawScriptParser extends Parser {
 				expression(0);
 				setState(126);
 				match(CLOSEDPARENTESIS);
-				}
-				}
-				break;
-			case 5:
-				{
+				setState(127);
+				expression(7);
 				}
 				break;
+			default:
+				throw new NoViableAltException(this);
 			}
 			_ctx.stop = _input.LT(-1);
 			setState(151);
@@ -1059,11 +1062,11 @@ public class DrawScriptParser extends Parser {
 						_localctx = new ExpressionContext(_parentctx, _parentState);
 						pushNewRecursionContext(_localctx, _startState, RULE_expression);
 						setState(131);
-						if (!(precpred(_ctx, 7))) throw new FailedPredicateException(this, "precpred(_ctx, 7)");
+						if (!(precpred(_ctx, 6))) throw new FailedPredicateException(this, "precpred(_ctx, 6)");
 						setState(132);
-						match(PLUS);
+						match(MOD);
 						setState(133);
-						expression(8);
+						expression(7);
 						}
 						break;
 					case 2:
@@ -1071,11 +1074,11 @@ public class DrawScriptParser extends Parser {
 						_localctx = new ExpressionContext(_parentctx, _parentState);
 						pushNewRecursionContext(_localctx, _startState, RULE_expression);
 						setState(134);
-						if (!(precpred(_ctx, 6))) throw new FailedPredicateException(this, "precpred(_ctx, 6)");
+						if (!(precpred(_ctx, 5))) throw new FailedPredicateException(this, "precpred(_ctx, 5)");
 						setState(135);
-						match(MINUS);
+						match(PLUS);
 						setState(136);
-						expression(7);
+						expression(6);
 						}
 						break;
 					case 3:
@@ -1083,11 +1086,11 @@ public class DrawScriptParser extends Parser {
 						_localctx = new ExpressionContext(_parentctx, _parentState);
 						pushNewRecursionContext(_localctx, _startState, RULE_expression);
 						setState(137);
-						if (!(precpred(_ctx, 5))) throw new FailedPredicateException(this, "precpred(_ctx, 5)");
+						if (!(precpred(_ctx, 4))) throw new FailedPredicateException(this, "precpred(_ctx, 4)");
 						setState(138);
-						match(DIVIDE);
+						match(MINUS);
 						setState(139);
-						expression(6);
+						expression(5);
 						}
 						break;
 					case 4:
@@ -1095,11 +1098,11 @@ public class DrawScriptParser extends Parser {
 						_localctx = new ExpressionContext(_parentctx, _parentState);
 						pushNewRecursionContext(_localctx, _startState, RULE_expression);
 						setState(140);
-						if (!(precpred(_ctx, 4))) throw new FailedPredicateException(this, "precpred(_ctx, 4)");
+						if (!(precpred(_ctx, 3))) throw new FailedPredicateException(this, "precpred(_ctx, 3)");
 						setState(141);
-						match(TIMES);
+						match(DIVIDE);
 						setState(142);
-						expression(5);
+						expression(4);
 						}
 						break;
 					case 5:
@@ -1107,11 +1110,11 @@ public class DrawScriptParser extends Parser {
 						_localctx = new ExpressionContext(_parentctx, _parentState);
 						pushNewRecursionContext(_localctx, _startState, RULE_expression);
 						setState(143);
-						if (!(precpred(_ctx, 3))) throw new FailedPredicateException(this, "precpred(_ctx, 3)");
+						if (!(precpred(_ctx, 2))) throw new FailedPredicateException(this, "precpred(_ctx, 2)");
 						setState(144);
-						match(MOD);
+						match(TIMES);
 						setState(145);
-						expression(4);
+						expression(3);
 						}
 						break;
 					case 6:
@@ -1119,11 +1122,11 @@ public class DrawScriptParser extends Parser {
 						_localctx = new ExpressionContext(_parentctx, _parentState);
 						pushNewRecursionContext(_localctx, _startState, RULE_expression);
 						setState(146);
-						if (!(precpred(_ctx, 2))) throw new FailedPredicateException(this, "precpred(_ctx, 2)");
+						if (!(precpred(_ctx, 1))) throw new FailedPredicateException(this, "precpred(_ctx, 1)");
 						setState(147);
 						match(EQUALS);
 						setState(148);
-						expression(3);
+						expression(2);
 						}
 						break;
 					}
@@ -1508,17 +1511,17 @@ public class DrawScriptParser extends Parser {
 	private boolean expression_sempred(ExpressionContext _localctx, int predIndex) {
 		switch (predIndex) {
 		case 3:
-			return precpred(_ctx, 7);
-		case 4:
 			return precpred(_ctx, 6);
-		case 5:
+		case 4:
 			return precpred(_ctx, 5);
-		case 6:
+		case 5:
 			return precpred(_ctx, 4);
-		case 7:
+		case 6:
 			return precpred(_ctx, 3);
-		case 8:
+		case 7:
 			return precpred(_ctx, 2);
+		case 8:
+			return precpred(_ctx, 1);
 		}
 		return true;
 	}
@@ -1552,7 +1555,7 @@ public class DrawScriptParser extends Parser {
 		"\u0001\u0010\u0001\u0010\u0001\u0011\u0001\u0011\u0001\u0012\u0001\u0012"+
 		"\u0001\u0013\u0001\u0013\u0001\u0013\u0000\u0004\u0002\u0004\u0006\u001a"+
 		"\u0014\u0000\u0002\u0004\u0006\b\n\f\u000e\u0010\u0012\u0014\u0016\u0018"+
-		"\u001a\u001c\u001e \"$&\u0000\u0000\u00b4\u0000(\u0001\u0000\u0000\u0000"+
+		"\u001a\u001c\u001e \"$&\u0000\u0000\u00b3\u0000(\u0001\u0000\u0000\u0000"+
 		"\u0002.\u0001\u0000\u0000\u0000\u00048\u0001\u0000\u0000\u0000\u0006B"+
 		"\u0001\u0000\u0000\u0000\bN\u0001\u0000\u0000\u0000\nR\u0001\u0000\u0000"+
 		"\u0000\fT\u0001\u0000\u0000\u0000\u000eY\u0001\u0000\u0000\u0000\u0010"+
@@ -1595,38 +1598,38 @@ public class DrawScriptParser extends Parser {
 		"\u000f\u0000w\u0019\u0001\u0000\u0000\u0000xy\u0006\r\uffff\uffff\u0000"+
 		"y\u0082\u0005\b\u0000\u0000z\u0082\u0005\t\u0000\u0000{\u0082\u0005\u0007"+
 		"\u0000\u0000|}\u0005\u0015\u0000\u0000}~\u0003\u001a\r\u0000~\u007f\u0005"+
-		"\u0016\u0000\u0000\u007f\u0082\u0001\u0000\u0000\u0000\u0080\u0082\u0001"+
-		"\u0000\u0000\u0000\u0081x\u0001\u0000\u0000\u0000\u0081z\u0001\u0000\u0000"+
-		"\u0000\u0081{\u0001\u0000\u0000\u0000\u0081|\u0001\u0000\u0000\u0000\u0081"+
-		"\u0080\u0001\u0000\u0000\u0000\u0082\u0097\u0001\u0000\u0000\u0000\u0083"+
-		"\u0084\n\u0007\u0000\u0000\u0084\u0085\u0005\f\u0000\u0000\u0085\u0096"+
-		"\u0003\u001a\r\b\u0086\u0087\n\u0006\u0000\u0000\u0087\u0088\u0005\r\u0000"+
-		"\u0000\u0088\u0096\u0003\u001a\r\u0007\u0089\u008a\n\u0005\u0000\u0000"+
-		"\u008a\u008b\u0005\u000f\u0000\u0000\u008b\u0096\u0003\u001a\r\u0006\u008c"+
-		"\u008d\n\u0004\u0000\u0000\u008d\u008e\u0005\u000e\u0000\u0000\u008e\u0096"+
-		"\u0003\u001a\r\u0005\u008f\u0090\n\u0003\u0000\u0000\u0090\u0091\u0005"+
-		"\u0010\u0000\u0000\u0091\u0096\u0003\u001a\r\u0004\u0092\u0093\n\u0002"+
-		"\u0000\u0000\u0093\u0094\u0005\u0014\u0000\u0000\u0094\u0096\u0003\u001a"+
-		"\r\u0003\u0095\u0083\u0001\u0000\u0000\u0000\u0095\u0086\u0001\u0000\u0000"+
-		"\u0000\u0095\u0089\u0001\u0000\u0000\u0000\u0095\u008c\u0001\u0000\u0000"+
-		"\u0000\u0095\u008f\u0001\u0000\u0000\u0000\u0095\u0092\u0001\u0000\u0000"+
-		"\u0000\u0096\u0099\u0001\u0000\u0000\u0000\u0097\u0095\u0001\u0000\u0000"+
-		"\u0000\u0097\u0098\u0001\u0000\u0000\u0000\u0098\u001b\u0001\u0000\u0000"+
-		"\u0000\u0099\u0097\u0001\u0000\u0000\u0000\u009a\u009b\u0005\u0005\u0000"+
-		"\u0000\u009b\u009c\u0003\u001a\r\u0000\u009c\u009d\u0005\u0013\u0000\u0000"+
-		"\u009d\u009e\u0003\u001a\r\u0000\u009e\u009f\u0005\u0005\u0000\u0000\u009f"+
-		"\u001d\u0001\u0000\u0000\u0000\u00a0\u00aa\u0005\b\u0000\u0000\u00a1\u00aa"+
-		"\u0005\t\u0000\u0000\u00a2\u00a4\u0003\"\u0011\u0000\u00a3\u00a5\u0003"+
-		"$\u0012\u0000\u00a4\u00a3\u0001\u0000\u0000\u0000\u00a4\u00a5\u0001\u0000"+
-		"\u0000\u0000\u00a5\u00a7\u0001\u0000\u0000\u0000\u00a6\u00a8\u0003&\u0013"+
-		"\u0000\u00a7\u00a6\u0001\u0000\u0000\u0000\u00a7\u00a8\u0001\u0000\u0000"+
-		"\u0000\u00a8\u00aa\u0001\u0000\u0000\u0000\u00a9\u00a0\u0001\u0000\u0000"+
-		"\u0000\u00a9\u00a1\u0001\u0000\u0000\u0000\u00a9\u00a2\u0001\u0000\u0000"+
-		"\u0000\u00aa\u001f\u0001\u0000\u0000\u0000\u00ab\u00ac\u0005\u0006\u0000"+
-		"\u0000\u00ac!\u0001\u0000\u0000\u0000\u00ad\u00ae\u0005\n\u0000\u0000"+
-		"\u00ae#\u0001\u0000\u0000\u0000\u00af\u00b0\u0005\n\u0000\u0000\u00b0"+
-		"%\u0001\u0000\u0000\u0000\u00b1\u00b2\u0005\n\u0000\u0000\u00b2\'\u0001"+
-		"\u0000\u0000\u0000\r5?INRdr\u0081\u0095\u0097\u00a4\u00a7\u00a9";
+		"\u0016\u0000\u0000\u007f\u0080\u0003\u001a\r\u0007\u0080\u0082\u0001\u0000"+
+		"\u0000\u0000\u0081x\u0001\u0000\u0000\u0000\u0081z\u0001\u0000\u0000\u0000"+
+		"\u0081{\u0001\u0000\u0000\u0000\u0081|\u0001\u0000\u0000\u0000\u0082\u0097"+
+		"\u0001\u0000\u0000\u0000\u0083\u0084\n\u0006\u0000\u0000\u0084\u0085\u0005"+
+		"\u0010\u0000\u0000\u0085\u0096\u0003\u001a\r\u0007\u0086\u0087\n\u0005"+
+		"\u0000\u0000\u0087\u0088\u0005\f\u0000\u0000\u0088\u0096\u0003\u001a\r"+
+		"\u0006\u0089\u008a\n\u0004\u0000\u0000\u008a\u008b\u0005\r\u0000\u0000"+
+		"\u008b\u0096\u0003\u001a\r\u0005\u008c\u008d\n\u0003\u0000\u0000\u008d"+
+		"\u008e\u0005\u000f\u0000\u0000\u008e\u0096\u0003\u001a\r\u0004\u008f\u0090"+
+		"\n\u0002\u0000\u0000\u0090\u0091\u0005\u000e\u0000\u0000\u0091\u0096\u0003"+
+		"\u001a\r\u0003\u0092\u0093\n\u0001\u0000\u0000\u0093\u0094\u0005\u0014"+
+		"\u0000\u0000\u0094\u0096\u0003\u001a\r\u0002\u0095\u0083\u0001\u0000\u0000"+
+		"\u0000\u0095\u0086\u0001\u0000\u0000\u0000\u0095\u0089\u0001\u0000\u0000"+
+		"\u0000\u0095\u008c\u0001\u0000\u0000\u0000\u0095\u008f\u0001\u0000\u0000"+
+		"\u0000\u0095\u0092\u0001\u0000\u0000\u0000\u0096\u0099\u0001\u0000\u0000"+
+		"\u0000\u0097\u0095\u0001\u0000\u0000\u0000\u0097\u0098\u0001\u0000\u0000"+
+		"\u0000\u0098\u001b\u0001\u0000\u0000\u0000\u0099\u0097\u0001\u0000\u0000"+
+		"\u0000\u009a\u009b\u0005\u0005\u0000\u0000\u009b\u009c\u0003\u001a\r\u0000"+
+		"\u009c\u009d\u0005\u0013\u0000\u0000\u009d\u009e\u0003\u001a\r\u0000\u009e"+
+		"\u009f\u0005\u0005\u0000\u0000\u009f\u001d\u0001\u0000\u0000\u0000\u00a0"+
+		"\u00aa\u0005\b\u0000\u0000\u00a1\u00aa\u0005\t\u0000\u0000\u00a2\u00a4"+
+		"\u0003\"\u0011\u0000\u00a3\u00a5\u0003$\u0012\u0000\u00a4\u00a3\u0001"+
+		"\u0000\u0000\u0000\u00a4\u00a5\u0001\u0000\u0000\u0000\u00a5\u00a7\u0001"+
+		"\u0000\u0000\u0000\u00a6\u00a8\u0003&\u0013\u0000\u00a7\u00a6\u0001\u0000"+
+		"\u0000\u0000\u00a7\u00a8\u0001\u0000\u0000\u0000\u00a8\u00aa\u0001\u0000"+
+		"\u0000\u0000\u00a9\u00a0\u0001\u0000\u0000\u0000\u00a9\u00a1\u0001\u0000"+
+		"\u0000\u0000\u00a9\u00a2\u0001\u0000\u0000\u0000\u00aa\u001f\u0001\u0000"+
+		"\u0000\u0000\u00ab\u00ac\u0005\u0006\u0000\u0000\u00ac!\u0001\u0000\u0000"+
+		"\u0000\u00ad\u00ae\u0005\n\u0000\u0000\u00ae#\u0001\u0000\u0000\u0000"+
+		"\u00af\u00b0\u0005\n\u0000\u0000\u00b0%\u0001\u0000\u0000\u0000\u00b1"+
+		"\u00b2\u0005\n\u0000\u0000\u00b2\'\u0001\u0000\u0000\u0000\r5?INRdr\u0081"+
+		"\u0095\u0097\u00a4\u00a7\u00a9";
 	public static final ATN _ATN =
 		new ATNDeserializer().deserialize(_serializedATN.toCharArray());
 	static {

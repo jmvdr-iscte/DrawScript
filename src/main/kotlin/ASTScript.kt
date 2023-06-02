@@ -66,6 +66,7 @@ fun DrawScriptParser.ExpressionContext.toAst(): Expression {
     return when {
         ID() != null -> Variable(ID().text)
         N() != null -> Literal(N().text.toInt())
+        PROPERTYID() != null -> Variable(PROPERTYID().text)
         PLUS() != null -> {
             val left = expression(0).toAst()
             val right = expression(1).toAst()
@@ -173,7 +174,6 @@ fun DrawScriptParser.ControlStructureContext.toAst(): Instruction {
         ifStatement() != null -> {
             val ifStatement = ifStatement()
             val guard = ifStatement.expression().toAst()
-
             val instructions = ifStatement.instructionList().toAst()
             IfElse(guard, instructions)
         }
@@ -205,11 +205,10 @@ fun main() {
             "background: GRAY\n" +
             "---\n" +
             "color BLACK\n" +
-            " if ( i+5 % 2 = 0)\n" +
+            "  if b + a % 2 = 0\n" +
             "fill WHITE\n" +
             "fill BLACK\n" +
             " _\n"
-
 
     val lexer = DrawScriptLexer(CharStreams.fromString(input))
     val parser = DrawScriptParser(CommonTokenStream(lexer))
