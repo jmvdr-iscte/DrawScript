@@ -2,8 +2,7 @@ import constants.Constant
 import controlstructures.ForLoop
 import controlstructures.IfElse
 import expressions.*
-import instructions.Declaration
-import instructions.Instruction
+import instructions.*
 import org.antlr.v4.runtime.CharStreams
 import org.antlr.v4.runtime.CommonTokenStream
 import properties.Background
@@ -163,8 +162,35 @@ fun DrawScriptParser.InstructionContext.toAst(): Instruction {
             controlStructure().toAst()
         }
 
+        figure() != null -> {
+            figure().toAst()
+        }
+
         else -> {
             throw IllegalArgumentException("Invalid Instruction")
+        }
+    }
+}
+
+fun DrawScriptParser.FigureContext.toAst():Figure {
+    return when {
+        figureshape() != null && figureshape().square() != null -> {
+            val localizationX = expression(0).toAst()
+            val localizationY = expression(1).toAst()
+            val squareSide = figureshape().square().expression().toAst()
+            Square(Localization(localizationX, localizationY), squareSide)
+        }
+
+        figureshape() != null && figureshape().rectangle() != null -> {
+            val localizationX = expression(0).toAst()
+            val localizationY = expression(1).toAst()
+            val rectangleWidth = figureshape().rectangle().expression(0).toAst()
+            val rectangleHeight = figureshape().rectangle().expression(1).toAst()
+            Rectangle(Localization(localizationX, localizationY), rectangleWidth, rectangleHeight)
+        }
+
+        else -> {
+            throw IllegalArgumentException("Invalid Figure")
         }
     }
 }
@@ -205,10 +231,18 @@ fun main() {
             "background: GRAY\n" +
             "---\n" +
             "color BLACK\n" +
-            "  if b + a % 2 = 0\n" +
-            "fill WHITE\n" +
-            "fill BLACK\n" +
-            " _\n"
+            "for l in [0,N[\n" +
+            "  for c in [0,N[\n" +
+            "    if (l + c) % 2 = 0\n" +
+            "      fill WHITE\n" +
+            "    \n" +
+            "      fill BLACK\n" +
+            "    _\n" +
+            "    square c * SIDE + MARGIN,l * SIDE + MARGIN SIDE\n" +
+            "  _\n" +
+            "_\n" +
+            "line 0|0|255|\n" +
+            "rectangle MARGIN,MARGIN N*SIDE ~ N*SIDE\n"
 
     val lexer = DrawScriptLexer(CharStreams.fromString(input))
     val parser = DrawScriptParser(CommonTokenStream(lexer))

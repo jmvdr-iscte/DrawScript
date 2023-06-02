@@ -57,6 +57,46 @@ public interface DrawScriptListener extends ParseTreeListener {
 	 */
 	void exitInstruction(DrawScriptParser.InstructionContext ctx);
 	/**
+	 * Enter a parse tree produced by {@link DrawScriptParser#figure}.
+	 * @param ctx the parse tree
+	 */
+	void enterFigure(DrawScriptParser.FigureContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link DrawScriptParser#figure}.
+	 * @param ctx the parse tree
+	 */
+	void exitFigure(DrawScriptParser.FigureContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link DrawScriptParser#figureshape}.
+	 * @param ctx the parse tree
+	 */
+	void enterFigureshape(DrawScriptParser.FigureshapeContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link DrawScriptParser#figureshape}.
+	 * @param ctx the parse tree
+	 */
+	void exitFigureshape(DrawScriptParser.FigureshapeContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link DrawScriptParser#square}.
+	 * @param ctx the parse tree
+	 */
+	void enterSquare(DrawScriptParser.SquareContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link DrawScriptParser#square}.
+	 * @param ctx the parse tree
+	 */
+	void exitSquare(DrawScriptParser.SquareContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link DrawScriptParser#rectangle}.
+	 * @param ctx the parse tree
+	 */
+	void enterRectangle(DrawScriptParser.RectangleContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link DrawScriptParser#rectangle}.
+	 * @param ctx the parse tree
+	 */
+	void exitRectangle(DrawScriptParser.RectangleContext ctx);
+	/**
 	 * Enter a parse tree produced by {@link DrawScriptParser#controlStructure}.
 	 * @param ctx the parse tree
 	 */

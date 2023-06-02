@@ -8,7 +8,15 @@ propertyList : property | propertyList property;
 
 instructionList: instruction | instructionList instruction;
 
-instruction: declaration | controlStructure;
+instruction: declaration | controlStructure | figure;
+
+figure: id= PROPERTYID() localization = expression INTERVALSEPARATOR expression shape= figureshape;
+
+figureshape: square | rectangle;
+
+square: expression;
+
+rectangle:expression PROPERTYSEPARATOR expression;
 
 controlStructure: ifStatement | forLoop;
 
@@ -36,7 +44,7 @@ expression: ID|N|PROPERTYID|
                 expression EQUALS expression;
 
 
-interval: '[' expression INTERVALSEPARATION expression '[';
+interval: '[' expression INTERVALSEPARATOR expression '[';
 
 value:ID|N|(r g? b?);
 
@@ -59,6 +67,6 @@ EQUALS: '=';
 WS: [ \t\r\n]+ -> skip;
 PROPERTYSEPARATOR: '~';
 ENDINSTRUCTION: '_';
-INTERVALSEPARATION: ',';
+INTERVALSEPARATOR: ',';
 OPENPARENTESIS:'(' ->skip;
 CLOSEDPARENTESIS:')' -> skip;

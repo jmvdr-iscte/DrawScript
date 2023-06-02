@@ -8,24 +8,32 @@ open class Figure(
 ) : Instruction
 
 class Rectangle(
-    localization: Localization,
+    val localization: Localization,
     var width: Expression,
     var height: Expression
-) : Figure()
+) : Figure() {
+    override fun toString(): String {
+        return "Square(localization: $localization, width: $width, height: $height)"
+    }
+}
+
 
 class Square(
-    localization: Localization,
+    val localization: Localization,
     var sideLength: Expression
-) : Figure()
-
+) : Figure() {
+    override fun toString(): String {
+        return "Square(localization: $localization, side: $sideLength)"
+    }
+}
 
 class Ellipse(
-    localization: Localization,
+    val localization: Localization,
     var horizontalRadius: Expression,
     var verticalRadius: Expression
 ) : Figure()
 
 class Circle(
-    localization: Localization,
+    val localization: Localization,
     var radius: Expression
 ) : Figure()
