@@ -4,7 +4,7 @@ import expressions.Expression
 import expressions.Literal
 
 data class Integer(
-    val N: Literal
+    val N: Expression
 ): Type{
 
 

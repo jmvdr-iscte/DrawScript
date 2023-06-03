@@ -117,15 +117,18 @@ fun DrawScriptParser.PropertyListContext.toAst(): List<Property> {
 }
 
 fun DrawScriptParser.PropertyContext.toAst(): Property {
-    return if (dimension() != null) {
-        val dimension = dimension()
-        val width = dimension.expression(0).toAst()
-        val height = dimension.expression(1).toAst()
+    //return if (dimension() != null) {
+    val dimension = dimension()
+    val width = dimension.expression(0).toAst()
+    val height = dimension.expression(1).toAst()
 
-        Dimension(propid.text, width, height)
-    } else {
-        Background(propid.text, Color(background().expression().toAst(), null, null))
-    }
+    return Dimension(//propid.text,
+        width, height
+    )
+    // } else {
+    //   Background( Color(background().expression().toAst(), null, null))
+    //   }
+
 }
 
 fun DrawScriptParser.InstructionListContext.toAst(): List<Instruction> {
@@ -172,7 +175,7 @@ fun DrawScriptParser.InstructionContext.toAst(): Instruction {
     }
 }
 
-fun DrawScriptParser.FigureContext.toAst():Figure {
+fun DrawScriptParser.FigureContext.toAst(): Figure {
     return when {
         figureshape() != null && figureshape().square() != null -> {
             val localizationX = expression(0).toAst()
