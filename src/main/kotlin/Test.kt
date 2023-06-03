@@ -8,20 +8,24 @@ import properties.Dimension
 import types.Color
 import types.Integer
 import types.Type
+import java.awt.Graphics
+import java.awt.Graphics2D
+import javax.swing.JComponent
+import javax.swing.JFrame
 
 fun main() {
     val script = Script(
         listOf(
             Constant("N", types.Integer(Literal(100))),
-            Constant("R", types.Integer(Literal(800))),
-            Constant("Black", Color(Literal(100), null, null)),
+            Constant("R", types.Integer(Literal(80))),
+            Constant("Black", Color(Literal(255), null, null)),
             Constant("White", Color(Literal(255), Literal(255), Literal(255)))
 
         ),
         listOf(
             Background("Black"),
             Dimension(
-             Variable("R"),
+                Variable("R"),
                 BinaryExpression(Variable("N"), Operator.PLUS, Variable("R"))
             )
         ),
@@ -32,3 +36,6 @@ fun main() {
     interpreter.run()
 
 }
+
+
+

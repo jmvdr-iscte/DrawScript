@@ -2,6 +2,8 @@ import expressions.*
 import properties.Background
 import properties.Dimension
 import types.Color
+import javax.swing.JComponent
+import javax.swing.JFrame
 
 data class Interpreter(
     val script: Script
@@ -24,14 +26,13 @@ data class Interpreter(
         for (property in script.properties) {
             when (property) {
                 is Background -> {
-                    val colorValue = memory[property.color]// fazer checks
+                    val colorValue = memory[property.color]
                     if (colorValue != null) {
                         memory["background"] = colorValue
                     } else {
                         // Handle case when color value is not found in memory
                         // You can throw an exception or handle it according to your requirements
                     }
-
                 }
 
                 is Dimension -> {
@@ -42,8 +43,29 @@ data class Interpreter(
                 }
             }
         }
-        print(memory)
+
+                // Create an instance of DrawScriptSkeleton and set the background color if available
+                val drawScriptSkeleton = DrawScriptSkeleton()
+                val backgroundColorValue = memory["background"]
+                if (backgroundColorValue != null) {
+                    val backgroundColor = retrieveColorFromMemory("background",memory)
+                    drawScriptSkeleton.background = backgroundColor
+                    print(backgroundColor)
+                }
+
+                // Perform other actions with the memory values if needed
+
+                // Display the DrawScriptSkeleton component
+                val frame = JFrame("DrawScript")
+                frame.contentPane.add(drawScriptSkeleton)
+                frame.defaultCloseOperation = JFrame.EXIT_ON_CLOSE
+                frame.setSize(memory["dimension_width"] ?: 800, memory["dimension_height"] ?: 600)
+
+                frame.isVisible = true
+
+
     }
+
 
 
     private fun calculateColorValue(color: Color, memory: MutableMap<String, Int>): Int {
@@ -107,8 +129,8 @@ data class Interpreter(
         }
     }
 
-    /*
-    fun retrieveColorFromMemory(key: String, memory: Map<String, Int>): Color {
+
+    private fun retrieveColorFromMemory(key: String, memory: MutableMap<String, Int>): java.awt.Color {
         val colorValue = memory[key] ?: throw IllegalArgumentException("Color value not found in memory")
 
         // Extract the individual RGB components from the color value using bit shifting and masking
@@ -119,7 +141,10 @@ data class Interpreter(
         // Create a Color object with the extracted RGB values
         return java.awt.Color(rValue, gValue, bValue)
     }
-    }
-
-    */
 }
+
+class DrawScriptSkeleton: JComponent() {
+
+}
+
+
