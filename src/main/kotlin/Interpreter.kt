@@ -1,4 +1,7 @@
 import expressions.*
+import instructions.Declaration
+import instructions.Figure
+import instructions.Square
 import properties.Background
 import properties.Dimension
 import types.Color
@@ -44,6 +47,46 @@ data class Interpreter(
                 }
             }
         }
+/*
+        for (instruction in script.instructions!!) {
+            when (instruction) {
+                is Declaration -> {
+                    when (instruction.value) {
+                        is types.Integer -> {
+                            memory[instruction.identity] = calculateExpression(instruction.value.N, memory)
+                        }
+
+                        is Color -> {
+                            val colorValue = calculateColorValue(instruction.value, memory)
+                            memory[instruction.identity] = colorValue
+                        }
+                    }
+                }
+
+                is Figure -> {
+                    when(instruction){
+                        is Square -> {
+                            val localization = instruction.localization
+                            //save the localization and the side length on the memory
+                            memory["localizationX"] = calculateExpression(localization.xValue, memory)
+                            memory["localizationY"] = calculateExpression(localization.yValue, memory)
+                            memory["sideLength"] = calculateExpression(instruction.sideLength, memory)
+
+
+                            //save
+
+
+
+
+                            // Draw a square with the given parameters
+                        }
+
+                    }
+                    // Handle figure instructions
+                }
+            }
+        }
+        */
 
                 // Create an instance of DrawScriptSkeleton and set the background color if available
                 val drawScriptSkeleton = DrawScriptSkeleton()
@@ -53,6 +96,8 @@ data class Interpreter(
                     drawScriptSkeleton.customBackground = backgroundColor
                     print(backgroundColor)
                 }
+
+
 
                 // Perform other actions with the memory values if needed
 
@@ -146,6 +191,11 @@ data class Interpreter(
 
 class DrawScriptSkeleton: JComponent() {
     var customBackground: java.awt.Color? = null
+    /*var squareColor: java.awt.Color? = null
+    var squareX: Int = 0
+    var squareY: Int = 0
+    var squareSize: Int = 0*/
+
 
     override fun paintComponent(g: Graphics) {
         super.paintComponent(g)
