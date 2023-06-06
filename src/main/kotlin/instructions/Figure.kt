@@ -45,3 +45,4 @@ class Circle(
         return "Circle(localization: $localization, radius: $radius)"
     }
 }
+

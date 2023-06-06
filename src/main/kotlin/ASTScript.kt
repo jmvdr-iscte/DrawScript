@@ -1,3 +1,4 @@
+/*
 import constants.Constant
 import controlstructures.ForLoop
 import controlstructures.IfElse
@@ -272,3 +273,6 @@ fun main() {
     val script = parser.script()
     println(script.toAst())
 }
+
+ */
+
