@@ -2,6 +2,7 @@ import expressions.*
 import properties.Background
 import properties.Dimension
 import types.Color
+import java.awt.Graphics
 import javax.swing.JComponent
 import javax.swing.JFrame
 
@@ -49,7 +50,7 @@ data class Interpreter(
                 val backgroundColorValue = memory["background"]
                 if (backgroundColorValue != null) {
                     val backgroundColor = retrieveColorFromMemory("background",memory)
-                    drawScriptSkeleton.background = backgroundColor
+                    drawScriptSkeleton.customBackground = backgroundColor
                     print(backgroundColor)
                 }
 
@@ -144,6 +145,19 @@ data class Interpreter(
 }
 
 class DrawScriptSkeleton: JComponent() {
+    var customBackground: java.awt.Color? = null
+
+    override fun paintComponent(g: Graphics) {
+        super.paintComponent(g)
+
+        // Set the custom background color if available
+        customBackground?.let {
+            g.color = it
+            g.fillRect(0, 0, width, height)
+        }
+
+        // Perform other custom painting operations
+    }
 
 }
 

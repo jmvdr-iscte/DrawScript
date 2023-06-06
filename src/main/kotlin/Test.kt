@@ -18,7 +18,7 @@ fun main() {
         listOf(
             Constant("N", types.Integer(Literal(100))),
             Constant("R", types.Integer(Literal(80))),
-            Constant("Black", Color(Literal(255), null, null)),
+            Constant("Black", Color(Literal(0), null, null)),
             Constant("White", Color(Literal(255), Literal(255), Literal(255)))
 
         ),
@@ -28,6 +28,8 @@ fun main() {
                 Variable("R"),
                 BinaryExpression(Variable("N"), Operator.PLUS, Variable("R"))
             )
+
+
         ),
         null
     )
