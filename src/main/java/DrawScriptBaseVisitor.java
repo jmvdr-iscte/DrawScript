@@ -66,14 +66,14 @@ public class DrawScriptBaseVisitor<T> extends AbstractParseTreeVisitor<T> implem
 	 * <p>The default implementation returns the result of calling
 	 * {@link #visitChildren} on {@code ctx}.</p>
 	 */
-	@Override public T visitSquare(DrawScriptParser.SquareContext ctx) { return visitChildren(ctx); }
+	@Override public T visitSingleparameter(DrawScriptParser.SingleparameterContext ctx) { return visitChildren(ctx); }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation returns the result of calling
 	 * {@link #visitChildren} on {@code ctx}.</p>
 	 */
-	@Override public T visitRectangle(DrawScriptParser.RectangleContext ctx) { return visitChildren(ctx); }
+	@Override public T visitDoubleparameter(DrawScriptParser.DoubleparameterContext ctx) { return visitChildren(ctx); }
 	/**
 	 * {@inheritDoc}
 	 *

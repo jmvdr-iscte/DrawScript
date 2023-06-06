@@ -118,18 +118,22 @@ fun DrawScriptParser.PropertyListContext.toAst(): List<Property> {
 }
 
 fun DrawScriptParser.PropertyContext.toAst(): Property {
-    //return if (dimension() != null) {
-    val dimension = dimension()
-    val width = dimension.expression(0).toAst()
-    val height = dimension.expression(1).toAst()
+    return when (propid.text) {
+        "dimension" -> {
+            val dimension = dimension()
+            val width = dimension.expression(0).toAst()
+            val height = dimension.expression(1).toAst()
+            Dimension(
+                width, height
+            )
+        }
 
-    return Dimension(//propid.text,
-        width, height
-    )
-    // } else {
-    //   Background( Color(background().expression().toAst(), null, null))
-    //   }
+        "background" -> {
+            Background(PROPERTYID().text)
+        }
 
+        else -> throw Exception("Property not found: $propid")
+    }
 }
 
 fun DrawScriptParser.InstructionListContext.toAst(): List<Instruction> {
@@ -177,51 +181,67 @@ fun DrawScriptParser.InstructionContext.toAst(): Instruction {
 }
 
 fun DrawScriptParser.FigureContext.toAst(): Figure {
-    return when {
-        figureshape() != null && figureshape().square() != null -> {
+    when {
+        figureshape() != null && figureshape().singleparameter() != null -> {
             val localizationX = expression(0).toAst()
             val localizationY = expression(1).toAst()
-            val squareSide = figureshape().square().expression().toAst()
-            Square(Localization(localizationX, localizationY), squareSide)
+            val figureParameter = figureshape().singleparameter().expression().toAst()
+            if (id.text == "square") {
+                return Square(Localization(localizationX, localizationY), figureParameter)
+            } else if (id.text == "circle") {
+                return Circle(Localization(localizationX, localizationY), figureParameter)
+            }
         }
 
-        figureshape() != null && figureshape().rectangle() != null -> {
+        figureshape() != null && figureshape().doubleparameter() != null -> {
             val localizationX = expression(0).toAst()
             val localizationY = expression(1).toAst()
-            val rectangleWidth = figureshape().rectangle().expression(0).toAst()
-            val rectangleHeight = figureshape().rectangle().expression(1).toAst()
-            Rectangle(Localization(localizationX, localizationY), rectangleWidth, rectangleHeight)
-        }
-
-        else -> {
-            throw IllegalArgumentException("Invalid Figure")
+            val leftParameter = figureshape().doubleparameter().expression(0).toAst()
+            val rectangleHeight = figureshape().doubleparameter().expression(1).toAst()
+            if (id.text == "rectangle") {
+                return Rectangle(Localization(localizationX, localizationY), leftParameter, rectangleHeight)
+            } else if (id.text == "ellipse") {
+                return Ellipse(Localization(localizationX, localizationY), leftParameter, rectangleHeight)
+            }
         }
     }
+
+    throw IllegalArgumentException("Invalid Figure")
 }
+
 
 fun DrawScriptParser.ControlStructureContext.toAst(): Instruction {
-    return when {
-        ifStatement() != null -> {
-            val ifStatement = ifStatement()
-            val guard = ifStatement.expression().toAst()
-            val instructions = ifStatement.instructionList().toAst()
-            IfElse(guard, instructions)
-        }
+        when {
+            ifStatement() != null -> {
+                val ifStmt = ifStatement()
+                val guard = ifStmt.expression().toAst()
+                val sequence = ifStmt.instructionList(0).toAst()
+                val alternative = if (ifStmt.instructionList().size > 1) {
+                    ifStmt.instructionList(1).toAst()
+                } else {
+                    null
+                }
+                return IfElse(guard, sequence, alternative)
+            }
 
-        forLoop() != null -> {
-            val forLoop = forLoop()
-            val loopVariable = forLoop.PROPERTYID().text
-            val lowerLimit = forLoop.interval().expression(0).toAst()
-            val higherLimit = forLoop.interval().expression(1).toAst()
-            val sequence = forLoop.instructionList().toAst()
-            ForLoop(Variable(loopVariable), Interval(lowerLimit, higherLimit), sequence, null)
-        }
+            forLoop() != null -> {
+                val forLoopStmt = forLoop()
+                val loopVariable = forLoopStmt.PROPERTYID().text
+                val lowerLimit = forLoopStmt.interval().expression(0).toAst()
+                val higherLimit = forLoopStmt.interval().expression(1).toAst()
+                val sequence = forLoopStmt.instructionList().toAst()
+                return ForLoop(Variable(loopVariable), Interval(lowerLimit, higherLimit), sequence, null)
+            }
 
-        else -> {
-            throw IllegalArgumentException("Invalid Control Structure")
+            else -> {
+                throw IllegalArgumentException("Invalid Control Structure")
+            }
         }
     }
-}
+
+
+
+
 
 fun main() {
     val input = "N: 8\n" +
@@ -239,14 +259,14 @@ fun main() {
             "  for c in [0,N[\n" +
             "    if (l + c) % 2 = 0\n" +
             "      fill WHITE\n" +
-            "    \n" +
+            "    else\n" +
             "      fill BLACK\n" +
             "    _\n" +
             "    square c * SIDE + MARGIN,l * SIDE + MARGIN SIDE\n" +
             "  _\n" +
             "_\n" +
             "line 0|0|255|\n" +
-            "rectangle MARGIN,MARGIN N*SIDE ~ N*SIDE\n"
+            "ellipse MARGIN,MARGIN N*SIDE ~ N*SIDE\n"
 
     val lexer = DrawScriptLexer(CharStreams.fromString(input))
     val parser = DrawScriptParser(CommonTokenStream(lexer))

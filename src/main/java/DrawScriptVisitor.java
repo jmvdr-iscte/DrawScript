@@ -52,17 +52,17 @@ public interface DrawScriptVisitor<T> extends ParseTreeVisitor<T> {
 	 */
 	T visitFigureshape(DrawScriptParser.FigureshapeContext ctx);
 	/**
-	 * Visit a parse tree produced by {@link DrawScriptParser#square}.
+	 * Visit a parse tree produced by {@link DrawScriptParser#singleparameter}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
-	T visitSquare(DrawScriptParser.SquareContext ctx);
+	T visitSingleparameter(DrawScriptParser.SingleparameterContext ctx);
 	/**
-	 * Visit a parse tree produced by {@link DrawScriptParser#rectangle}.
+	 * Visit a parse tree produced by {@link DrawScriptParser#doubleparameter}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
-	T visitRectangle(DrawScriptParser.RectangleContext ctx);
+	T visitDoubleparameter(DrawScriptParser.DoubleparameterContext ctx);
 	/**
 	 * Visit a parse tree produced by {@link DrawScriptParser#controlStructure}.
 	 * @param ctx the parse tree

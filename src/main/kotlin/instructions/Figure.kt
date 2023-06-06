@@ -10,17 +10,17 @@ open class Figure(
 class Rectangle(
     val localization: Localization,
     var width: Expression,
-    var height: Expression
+    var height: Expression,
 ) : Figure() {
     override fun toString(): String {
-        return "Square(localization: $localization, width: $width, height: $height)"
+        return "Rectangle(localization: $localization, width: $width, height: $height)"
     }
 }
 
 
 class Square(
     val localization: Localization,
-    var sideLength: Expression
+    var sideLength: Expression,
 ) : Figure() {
     override fun toString(): String {
         return "Square(localization: $localization, side: $sideLength)"
@@ -30,12 +30,19 @@ class Square(
 class Ellipse(
     val localization: Localization,
     var horizontalRadius: Expression,
-    var verticalRadius: Expression
-) : Figure()
+    var verticalRadius: Expression,
+) : Figure() {
+    override fun toString(): String {
+        return "Ellipse(localization: $localization, horizontalRadius: $horizontalRadius, verticalRadius :$verticalRadius)"
+    }
+}
 
 class Circle(
     val localization: Localization,
-    var radius: Expression
-) : Figure()
-
+    var radius: Expression,
+) : Figure() {
+    override fun toString(): String {
+        return "Circle(localization: $localization, radius: $radius)"
+    }
+}
 
