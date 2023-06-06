@@ -1,7 +1,5 @@
 import expressions.*
-import instructions.Declaration
-import instructions.Figure
-import instructions.Square
+import instructions.*
 import properties.Background
 import properties.Dimension
 import types.Color
@@ -47,20 +45,27 @@ data class Interpreter(
                 }
             }
         }
-/*
+
         for (instruction in script.instructions!!) {
             when (instruction) {
                 is Declaration -> {
-                    when (instruction.value) {
-                        is types.Integer -> {
-                            memory[instruction.identity] = calculateExpression(instruction.value.N, memory)
-                        }
+                    when (instruction) {
+                        is color -> {
 
-                        is Color -> {
-                            val colorValue = calculateColorValue(instruction.value, memory)
-                            memory[instruction.identity] = colorValue
+                            val colorValue = memory[instruction.color]
+                            if (colorValue != null) {
+                                memory[instruction.identity] = colorValue
+                            }
+                        }
+                        is line -> {
+                            val colorValue = calculateColorValue(instruction.color, memory)
+                            if (colorValue != null) {
+                                memory[instruction.identity] = colorValue
+                            }
+
                         }
                     }
+
                 }
 
                 is Figure -> {
@@ -68,17 +73,38 @@ data class Interpreter(
                         is Square -> {
                             val localization = instruction.localization
                             //save the localization and the side length on the memory
-                            memory["localizationX"] = calculateExpression(localization.xValue, memory)
-                            memory["localizationY"] = calculateExpression(localization.yValue, memory)
-                            memory["sideLength"] = calculateExpression(instruction.sideLength, memory)
+                            memory["localizationXsquare"] = calculateExpression(localization.xValue, memory)
+                            memory["localizationYsquare"] = calculateExpression(localization.yValue, memory)
+                            memory["sideLengthSquare"] = calculateExpression(instruction.sideLength, memory)
+
+                        }
+                        is Rectangle -> {
+                            val localization = instruction.localization
+                            //save the localization and the side length on the memory
+                            memory["localizationXrectangle"] = calculateExpression(localization.xValue, memory)
+                            memory["localizationYrectangle"] = calculateExpression(localization.yValue, memory)
+                            memory["widthRectangle"] = calculateExpression(instruction.width, memory)
+                            memory["heightRectangle"] = calculateExpression(instruction.height, memory)
 
 
-                            //save
+                        }
+                        is Ellipse -> {
+                            val localization = instruction.localization
+                            //save the localization and the side length on the memory
+                            memory["localizationXellipse"] = calculateExpression(localization.xValue, memory)
+                            memory["localizationYellipse"] = calculateExpression(localization.yValue, memory)
+                            memory["horizontalRadius"] = calculateExpression(instruction.horizontalRadius, memory)
+                            memory["verticalRadius"] = calculateExpression(instruction.verticalRadius, memory)
 
 
+                        }
 
-
-                            // Draw a square with the given parameters
+                        is Circle -> {
+                            val localization = instruction.localization
+                            //save the localization and the side length on the memory
+                            memory["localizationXcircle"] = calculateExpression(localization.xValue, memory)
+                            memory["localizationYcircle"] = calculateExpression(localization.yValue, memory)
+                            memory["radius"] = calculateExpression(instruction.radius, memory)
                         }
 
                     }
@@ -86,16 +112,86 @@ data class Interpreter(
                 }
             }
         }
-        */
+
 
                 // Create an instance of DrawScriptSkeleton and set the background color if available
                 val drawScriptSkeleton = DrawScriptSkeleton()
                 val backgroundColorValue = memory["background"]
+                //val colorFigures = memory[memory.keys.lastOrNull()]
+                val localizationXsquare = memory["localizationXsquare"]
+                val localizationYsquare = memory["localizationYsquare"]
+                val sideLengthSquare = memory["sideLengthSquare"]
+                val widthRectangle = memory["widthRectangle"]
+                val heightRectangle = memory["heightRectangle"]
+                val localizationXrectangle = memory["localizationXrectangle"]
+                val localizationYrectangle = memory["localizationYrectangle"]
+                val localizationXellipse = memory["localizationXellipse"]
+                val localizationYellipse = memory["localizationYellipse"]
+                val horizontalRadius = memory["horizontalRadius"]
+                val verticalRadius = memory["verticalRadius"]
+                val localizationXcircle = memory["localizationXcircle"]
+                val localizationYcircle = memory["localizationYcircle"]
+                val radius = memory["radius"]
+
+               /* if (colorFigures != null) {
+                    drawScriptSkeleton.colorFigures = retrieveColorFromMemory(memory.keys.lastOrNull()!!,memory)
+                }*/
+
                 if (backgroundColorValue != null) {
                     val backgroundColor = retrieveColorFromMemory("background",memory)
                     drawScriptSkeleton.customBackground = backgroundColor
-                    print(backgroundColor)
+
                 }
+
+
+
+                if (localizationXsquare != null && localizationYsquare != null) {
+                    drawScriptSkeleton.localizationXsquare = localizationXsquare
+                    drawScriptSkeleton.localizationYsquare = localizationYsquare
+
+                }
+
+
+                if (sideLengthSquare != null) {
+                    drawScriptSkeleton.sideLengthSquare = sideLengthSquare
+
+                }
+
+                if(widthRectangle != null && heightRectangle != null){
+                    drawScriptSkeleton.widthRectangle = widthRectangle
+                    drawScriptSkeleton.heightRectangle = heightRectangle
+
+                }
+
+                if(localizationXrectangle != null && localizationYrectangle != null){
+                    drawScriptSkeleton.localizationXrectangle = localizationXrectangle
+                    drawScriptSkeleton.localizationYrectangle = localizationYrectangle
+
+                }
+
+                if(localizationXellipse != null && localizationYellipse != null){
+                    drawScriptSkeleton.localizationXellipse = localizationXellipse
+                    drawScriptSkeleton.localizationYellipse = localizationYellipse
+
+                }
+
+                if(horizontalRadius != null && verticalRadius != null){
+                    drawScriptSkeleton.horizontalRadius = horizontalRadius
+                    drawScriptSkeleton.verticalRadius = verticalRadius
+
+                }
+
+                if(localizationXcircle != null && localizationYcircle != null){
+                    drawScriptSkeleton.localizationXcircle = localizationXcircle
+                    drawScriptSkeleton.localizationYcircle = localizationYcircle
+
+                }
+
+                if(radius != null){
+                    drawScriptSkeleton.radius = radius
+                }
+
+
 
 
 
@@ -191,10 +287,23 @@ data class Interpreter(
 
 class DrawScriptSkeleton: JComponent() {
     var customBackground: java.awt.Color? = null
-    /*var squareColor: java.awt.Color? = null
-    var squareX: Int = 0
-    var squareY: Int = 0
-    var squareSize: Int = 0*/
+    var colorFigures: java.awt.Color? = java.awt.Color(0,0,0)
+    var localizationXsquare: Int? = 0
+    var localizationYsquare: Int? = 0
+    var sideLengthSquare: Int? = 0
+    var widthRectangle: Int? = 0
+    var heightRectangle: Int? = 0
+    var localizationXrectangle: Int? = 0
+    var localizationYrectangle: Int? = 0
+    var localizationXellipse: Int? = 0
+    var localizationYellipse: Int? = 0
+    var horizontalRadius: Int? = 0
+    var verticalRadius: Int? = 0
+    var localizationXcircle: Int? = 0
+    var localizationYcircle: Int? = 0
+    var radius: Int? = 0
+
+
 
 
     override fun paintComponent(g: Graphics) {
@@ -205,6 +314,16 @@ class DrawScriptSkeleton: JComponent() {
             g.color = it
             g.fillRect(0, 0, width, height)
         }
+
+        colorFigures?.let {
+            g.color = it
+            g.fillRect(localizationXsquare!!, localizationYsquare!!, sideLengthSquare!!, sideLengthSquare!!)
+            g.fillRect(localizationXrectangle!!, localizationYrectangle!!, widthRectangle!!, heightRectangle!!)
+            g.fillOval(localizationXellipse!!, localizationYellipse!!, horizontalRadius!!, verticalRadius!!)
+            g.fillOval(localizationXcircle!!, localizationYcircle!!, radius!!, radius!!)
+        }
+
+
 
         // Perform other custom painting operations
     }

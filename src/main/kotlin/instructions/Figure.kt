@@ -37,3 +37,5 @@ class Circle(
     val localization: Localization,
     var radius: Expression
 ) : Figure()
+
+
