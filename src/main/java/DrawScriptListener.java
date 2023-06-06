@@ -77,25 +77,25 @@ public interface DrawScriptListener extends ParseTreeListener {
 	 */
 	void exitFigureshape(DrawScriptParser.FigureshapeContext ctx);
 	/**
-	 * Enter a parse tree produced by {@link DrawScriptParser#square}.
+	 * Enter a parse tree produced by {@link DrawScriptParser#singleparameter}.
 	 * @param ctx the parse tree
 	 */
-	void enterSquare(DrawScriptParser.SquareContext ctx);
+	void enterSingleparameter(DrawScriptParser.SingleparameterContext ctx);
 	/**
-	 * Exit a parse tree produced by {@link DrawScriptParser#square}.
+	 * Exit a parse tree produced by {@link DrawScriptParser#singleparameter}.
 	 * @param ctx the parse tree
 	 */
-	void exitSquare(DrawScriptParser.SquareContext ctx);
+	void exitSingleparameter(DrawScriptParser.SingleparameterContext ctx);
 	/**
-	 * Enter a parse tree produced by {@link DrawScriptParser#rectangle}.
+	 * Enter a parse tree produced by {@link DrawScriptParser#doubleparameter}.
 	 * @param ctx the parse tree
 	 */
-	void enterRectangle(DrawScriptParser.RectangleContext ctx);
+	void enterDoubleparameter(DrawScriptParser.DoubleparameterContext ctx);
 	/**
-	 * Exit a parse tree produced by {@link DrawScriptParser#rectangle}.
+	 * Exit a parse tree produced by {@link DrawScriptParser#doubleparameter}.
 	 * @param ctx the parse tree
 	 */
-	void exitRectangle(DrawScriptParser.RectangleContext ctx);
+	void exitDoubleparameter(DrawScriptParser.DoubleparameterContext ctx);
 	/**
 	 * Enter a parse tree produced by {@link DrawScriptParser#controlStructure}.
 	 * @param ctx the parse tree

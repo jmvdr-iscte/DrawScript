@@ -100,25 +100,25 @@ public class DrawScriptBaseListener implements DrawScriptListener {
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterSquare(DrawScriptParser.SquareContext ctx) { }
+	@Override public void enterSingleparameter(DrawScriptParser.SingleparameterContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void exitSquare(DrawScriptParser.SquareContext ctx) { }
+	@Override public void exitSingleparameter(DrawScriptParser.SingleparameterContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterRectangle(DrawScriptParser.RectangleContext ctx) { }
+	@Override public void enterDoubleparameter(DrawScriptParser.DoubleparameterContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void exitRectangle(DrawScriptParser.RectangleContext ctx) { }
+	@Override public void exitDoubleparameter(DrawScriptParser.DoubleparameterContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *

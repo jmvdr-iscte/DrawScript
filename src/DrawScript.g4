@@ -12,15 +12,15 @@ instruction: declaration | controlStructure | figure;
 
 figure: id= PROPERTYID() localization = expression INTERVALSEPARATOR expression shape= figureshape;
 
-figureshape: square | rectangle;
+figureshape: singleparameter | doubleparameter ;
 
-square: expression;
+singleparameter: expression;
 
-rectangle:expression PROPERTYSEPARATOR expression;
+doubleparameter: expression PROPERTYSEPARATOR  expression;
 
 controlStructure: ifStatement | forLoop;
 
-ifStatement: 'if' expression instructionList  ENDINSTRUCTION;
+ifStatement: 'if' expression instructionList  ('else' instructionList )? ENDINSTRUCTION;
 
 forLoop: 'for' PROPERTYID 'in' interval instructionList ENDINSTRUCTION;
 
@@ -28,7 +28,7 @@ property: propid = PROPERTYID ':' (dimension|background);
 
 dimension: expression PROPERTYSEPARATOR expression;
 
-background: expression;
+background: ID;
 
 declaration : id=PROPERTYID  (expression|(r g b));
 
