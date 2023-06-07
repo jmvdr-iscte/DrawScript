@@ -10,4 +10,4 @@ data class ForLoop(
     val interval: Interval,
     val sequence: List<Instruction>,
     var current: SequenceIterator?
-) : Instruction
+) : ControlStructure

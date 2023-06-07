@@ -1,4 +1,5 @@
 package controlstructures
 
-interface ControlStructure {
-}
+import instructions.Instruction
+
+open interface ControlStructure :Instruction
