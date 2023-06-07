@@ -1,4 +1,5 @@
 import constants.Constant
+import controlstructures.IfElse
 import expressions.BinaryExpression
 import expressions.Literal
 import expressions.Operator
@@ -34,35 +35,37 @@ fun main() {
                 BinaryExpression(Variable("N"), Operator.PLUS, Variable("R"))
             )
 
-
-
-
         ),
         listOf(
-            Square(
-                Localization(
-                    Literal(200),
-                    Literal(200)
-                ),
-                Literal(200)
+            IfElse(
+                BinaryExpression(Literal(3), Operator.EQUAL, Literal(3)),
+                listOf(
+                    Square(
+                        Localization(
+                            Literal(200),
+                            Literal(200)
+                        ),
+                        Literal(200)
+                    )
+                ), listOf(
+                    Rectangle(
+                        Localization(
+                            Literal(100),
+                            Literal(100)
+                        ),
+                        Literal(200),
+                        Literal(100)
+                    )
+                )
             ),
-
-            Rectangle(
+            Ellipse(
                 Localization(
-                    Literal(100),
-                    Literal(100)
+                    Literal(500),
+                    Literal(500)
                 ),
                 Literal(200),
                 Literal(100)
-        ),
-           Ellipse(
-               Localization(
-                   Literal(500),
-                   Literal(500)
-               ),
-               Literal(200),
-               Literal(100)
-           ),
+            ),
             Circle(
                 Localization(
                     Literal(800),
@@ -70,9 +73,6 @@ fun main() {
                 ),
                 Literal(300)
             )
-
-
-
         )
     )
 

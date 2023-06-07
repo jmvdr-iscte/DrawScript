@@ -1,14 +1,12 @@
 package instructions
 
-import expressions.Expression
 import types.Color
-import types.Type
 
 open class Declaration(
     open val identity: String,
 ):Instruction
 
-class color(
+class FigureColor(
     override val identity: String,
     val color: String
 ): Declaration(identity) {
@@ -17,7 +15,7 @@ class color(
     }
 }
 
-class line(
+class Line(
     override val identity: String,
     val color: Color,
 ): Declaration(identity) {
