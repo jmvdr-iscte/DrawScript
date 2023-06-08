@@ -17,11 +17,13 @@ import javax.swing.JFrame
 fun main() {
     val script = Script(
         listOf(
-            Constant("N", types.Integer(Literal(100))),
-            Constant("R", types.Integer(Literal(80))),
+            Constant("N", types.Integer(Literal(600))),
+            Constant("R", types.Integer(Literal(1600))),
             Constant("Red", Color(Literal(255), null, null)),
             Constant("White", Color(Literal(255), Literal(255), Literal(255))),
-            Constant("Green", Color(Literal(0), Literal(255), Literal(0)))
+            Constant("Green", Color(Literal(0), Literal(255), Literal(0))),
+            Constant("Black", Color(Literal(0), Literal(0), Literal(0)))
+
 
 
 
@@ -70,6 +72,7 @@ fun main() {
             ),
 
             FigureColor("Green"),
+            Fill("White"),
             Circle(
                 Localization(
                     Literal(800),
@@ -77,6 +80,8 @@ fun main() {
                 ),
                 Literal(300)
             ),
+
+            Fill("Black"),
 
             Circle(
                 Localization(
