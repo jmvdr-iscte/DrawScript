@@ -208,6 +208,18 @@ public class DrawScriptBaseListener implements DrawScriptListener {
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
+	@Override public void enterDecvalue(DrawScriptParser.DecvalueContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitDecvalue(DrawScriptParser.DecvalueContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
 	@Override public void enterConstant(DrawScriptParser.ConstantContext ctx) { }
 	/**
 	 * {@inheritDoc}

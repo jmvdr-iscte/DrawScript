@@ -167,6 +167,16 @@ public interface DrawScriptListener extends ParseTreeListener {
 	 */
 	void exitDeclaration(DrawScriptParser.DeclarationContext ctx);
 	/**
+	 * Enter a parse tree produced by {@link DrawScriptParser#decvalue}.
+	 * @param ctx the parse tree
+	 */
+	void enterDecvalue(DrawScriptParser.DecvalueContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link DrawScriptParser#decvalue}.
+	 * @param ctx the parse tree
+	 */
+	void exitDecvalue(DrawScriptParser.DecvalueContext ctx);
+	/**
 	 * Enter a parse tree produced by {@link DrawScriptParser#constant}.
 	 * @param ctx the parse tree
 	 */

@@ -21,3 +21,10 @@ class Line(
         return "line(color: $color)"
     }
 }
+class Fill(
+    val color: String
+): Declaration() {
+    override fun toString(): String {
+        return "fill(color: $color)"
+    }
+}
