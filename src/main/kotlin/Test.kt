@@ -24,6 +24,7 @@ fun main() {
             Constant("Green", Color(Literal(0), Literal(255), Literal(0)))
 
 
+
         ),
         listOf(
             Background("Red"),
@@ -34,10 +35,12 @@ fun main() {
 
         ),
         listOf(
+
             ForLoop(
                 Variable("a"), Interval(Literal(0), Literal(5)), listOf(
                     FigureColor("Green"),
                     Ellipse(
+
                         Localization(
                             BinaryExpression(Literal(50), Operator.TIMES, Variable("a")),
                             Literal(50)
@@ -46,6 +49,24 @@ fun main() {
                         Literal(15)
                     ),
                 )
+            ),
+
+            Line(
+                Color(
+                    Literal(0),
+                    Literal(0),
+                    Literal(255)
+                )
+            ),
+            FigureColor("Green"),
+            
+            Ellipse(
+                Localization(
+                    Literal(500),
+                    Literal(500)
+                ),
+                Literal(200),
+                Literal(100)
             ),
 
             FigureColor("Green"),

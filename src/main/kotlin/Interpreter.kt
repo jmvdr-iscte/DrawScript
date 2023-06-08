@@ -66,9 +66,9 @@ data class Interpreter(
                         }
 
                         is Line -> {
-                            val colorValue = calculateColorValue(instruction.color, memory)
-                            if (colorValue != null) {
-                                memory["Line"] = colorValue
+                            val lineColor = calculateColorValue(instruction.color, memory)
+                            if (lineColor != null) {
+                                memory["lineColor"] = lineColor
                             }
                         }
                         // Handle other types of declarations if needed
@@ -166,10 +166,15 @@ data class Interpreter(
         val drawScriptSkeleton = DrawScriptSkeleton()
         val backgroundColorValue = memory["background"]
         val colorFigures = memory["figureColor"]
+        val lineColor = memory["lineColor"]
 
 
         if (colorFigures != null) {
             drawScriptSkeleton.colorFigures = retrieveColorFromMemory("figureColor", memory)
+        }
+
+        if (lineColor != null) {
+            drawScriptSkeleton.lineColor = retrieveColorFromMemory("lineColor", memory)
         }
 
         if (backgroundColorValue != null) {
@@ -276,9 +281,8 @@ class DrawScriptSkeleton : JComponent() {
     var customBackground: java.awt.Color? = null
     var colorFigures: java.awt.Color? = java.awt.Color(0, 0, 0)
     var memory: MutableMap<String, Any> = mutableMapOf()
+    var lineColor: java.awt.Color? = null
 
-
-    //pass to int
 
 
     override fun paintComponent(g: Graphics) {
@@ -303,6 +307,12 @@ class DrawScriptSkeleton : JComponent() {
                         colorFigures?.let {
                             g.color = it
                             g.fillRect(x, y, sideLength, sideLength)
+
+
+                            lineColor?.let { lineColor ->
+                                g.color = lineColor
+                                g.drawRect(x, y, sideLength, sideLength)
+                            }
                         }
                     }
 
@@ -315,6 +325,12 @@ class DrawScriptSkeleton : JComponent() {
                         colorFigures?.let {
                             g.color = it
                             g.fillRect(x, y, width, height)
+
+                            lineColor?.let { lineColor ->
+                                g.color = lineColor
+                                g.drawRect(x, y, width, height)
+                            }
+
                         }
                     }
 
@@ -327,6 +343,11 @@ class DrawScriptSkeleton : JComponent() {
                         colorFigures?.let {
                             g.color = it
                             g.fillOval(x, y, horizontalRadius, verticalRadius)
+
+                            lineColor?.let { lineColor ->
+                                g.color = lineColor
+                                g.drawOval(x, y, horizontalRadius, verticalRadius)
+                            }
                         }
                     }
 
@@ -338,6 +359,11 @@ class DrawScriptSkeleton : JComponent() {
                         colorFigures?.let {
                             g.color = it
                             g.fillOval(x, y, radius, radius)
+
+                            lineColor?.let { lineColor ->
+                                g.color = lineColor
+                                g.drawOval(x, y, radius, radius)
+                            }
                         }
                     }
                 }
