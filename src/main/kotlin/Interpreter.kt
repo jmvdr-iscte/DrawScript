@@ -7,6 +7,7 @@ import properties.Background
 import properties.Dimension
 import types.Color
 import java.awt.Graphics
+import java.util.*
 import javax.swing.JComponent
 import javax.swing.JFrame
 
@@ -15,7 +16,7 @@ data class Interpreter(
 ) {
 
     fun run() {
-        val memory = mutableMapOf<String, Int>()
+        val memory = mutableMapOf<String, Any>()
         for (constant in script.constants) {
             when (constant.value) {
                 is types.Integer -> {
@@ -31,7 +32,7 @@ data class Interpreter(
         for (property in script.properties) {
             when (property) {
                 is Background -> {
-                    val colorValue = memory[property.color]
+                    val colorValue  = memory[property.color]
                     if (colorValue != null) {
                         memory["background"] = colorValue
                     } else {
@@ -52,7 +53,7 @@ data class Interpreter(
         setupWindow(memory)
     }
 
-    private fun executeInstructions(instructions: List<Instruction>, memory: MutableMap<String, Int>) {
+    private fun executeInstructions(instructions: List<Instruction>, memory: MutableMap<String, Any>) {
         for (instruction in instructions) {
             when (instruction) {
                 is Declaration -> {
@@ -60,14 +61,14 @@ data class Interpreter(
                         is FigureColor -> {
                             val colorValue = memory[instruction.color]
                             if (colorValue != null) {
-                                memory[instruction.identity] = colorValue
+                                memory["figureColor"] = colorValue
                             }
                         }
 
                         is Line -> {
                             val colorValue = calculateColorValue(instruction.color, memory)
                             if (colorValue != null) {
-                                memory[instruction.identity] = colorValue
+                                memory["Line"] = colorValue
                             }
                         }
                         // Handle other types of declarations if needed
@@ -78,37 +79,55 @@ data class Interpreter(
                     when (instruction) {
                         is Square -> {
                             val localization = instruction.localization
-                            // Save the localization and the side length in the memory
-                            memory["localizationXsquare"] = calculateExpression(localization.xValue, memory)
-                            memory["localizationYsquare"] = calculateExpression(localization.yValue, memory)
-                            memory["sideLengthSquare"] = calculateExpression(instruction.sideLength, memory)
-                        }
+                            val figureId = generateUniqueFigureId()
+                            val figureMemory = mutableMapOf<String, Any>(
+                                "localizationX" to calculateExpression(localization.xValue, memory),
+                                "localizationY" to calculateExpression(localization.yValue, memory),
+                                "sideLength" to calculateExpression(instruction.sideLength, memory)
+                            )
+
+
+
+                            memory[figureId] = figureMemory
+                           }
 
                         is Rectangle -> {
                             val localization = instruction.localization
-                            // Save the localization and the side length in the memory
-                            memory["localizationXrectangle"] = calculateExpression(localization.xValue, memory)
-                            memory["localizationYrectangle"] = calculateExpression(localization.yValue, memory)
-                            memory["widthRectangle"] = calculateExpression(instruction.width, memory)
-                            memory["heightRectangle"] = calculateExpression(instruction.height, memory)
-                        }
+                            val figureId = generateUniqueFigureId()
+                            val figureMemory = mutableMapOf<String, Any>(
+                                "localizationX" to calculateExpression(localization.xValue, memory),
+                                "localizationY" to calculateExpression(localization.yValue, memory),
+                                "width" to calculateExpression(instruction.width, memory),
+                                "height" to calculateExpression(instruction.height, memory)
+                            )
+
+                            memory[figureId] = figureMemory
+                            }
 
                         is Ellipse -> {
                             val localization = instruction.localization
-                            // Save the localization and the side length in the memory
-                            memory["localizationXellipse"] = calculateExpression(localization.xValue, memory)
-                            memory["localizationYellipse"] = calculateExpression(localization.yValue, memory)
-                            memory["horizontalRadius"] = calculateExpression(instruction.horizontalRadius, memory)
-                            memory["verticalRadius"] = calculateExpression(instruction.verticalRadius, memory)
-                        }
+                            val figureId = generateUniqueFigureId()
+
+                            val figureMemory = mutableMapOf<String, Any>(
+                                "localizationX" to calculateExpression(localization.xValue, memory),
+                                "localizationY" to calculateExpression(localization.yValue, memory),
+                                "horizontalRadius" to calculateExpression(instruction.horizontalRadius, memory),
+                                "verticalRadius" to calculateExpression(instruction.verticalRadius, memory)
+                            )
+                            memory[figureId] = figureMemory
+
+                           }
 
                         is Circle -> {
                             val localization = instruction.localization
-                            // Save the localization and the side length in the memory
-                            memory["localizationXcircle"] = calculateExpression(localization.xValue, memory)
-                            memory["localizationYcircle"] = calculateExpression(localization.yValue, memory)
-                            memory["radius"] = calculateExpression(instruction.radius, memory)
-                        }
+                            val figureId = generateUniqueFigureId()
+                            val figureMemory = mutableMapOf<String, Any>(
+                                "localizationX" to calculateExpression(localization.xValue, memory),
+                                "localizationY" to calculateExpression(localization.yValue, memory),
+                                "radius" to calculateExpression(instruction.radius, memory)
+                            )
+                            memory[figureId] = figureMemory
+                            }
                         // Handle other types of figures if needed
                     }
                 }
@@ -116,7 +135,7 @@ data class Interpreter(
                 is ControlStructure -> {
                     when (instruction) {
                         is IfElse -> {
-                            val guardResult = calculateExpression(instruction.guard, memory)
+                            val guardResult = calculateExpression(instruction.guard, memory )
                             val sequenceToExecute =
                                 if (guardResult == 0) instruction.sequence else instruction.alternative
                             sequenceToExecute?.let { sequence ->
@@ -131,30 +150,21 @@ data class Interpreter(
         }
     }
 
+    private fun generateUniqueFigureId(): String {
+        // Generate a unique identifier for each figure instance
+        return UUID.randomUUID().toString()
+    }
+
     // Create an instance of DrawScriptSkeleton and set the background color if available
-    private fun setupWindow(memory: MutableMap<String, Int>) {
+    private fun setupWindow(memory: MutableMap<String, Any>) {
         val drawScriptSkeleton = DrawScriptSkeleton()
         val backgroundColorValue = memory["background"]
+        val colorFigures = memory["figureColor"]
 
-        //val colorFigures = memory[memory.keys.lastOrNull()]
-        val localizationXsquare = memory["localizationXsquare"]
-        val localizationYsquare = memory["localizationYsquare"]
-        val sideLengthSquare = memory["sideLengthSquare"]
-        val widthRectangle = memory["widthRectangle"]
-        val heightRectangle = memory["heightRectangle"]
-        val localizationXrectangle = memory["localizationXrectangle"]
-        val localizationYrectangle = memory["localizationYrectangle"]
-        val localizationXellipse = memory["localizationXellipse"]
-        val localizationYellipse = memory["localizationYellipse"]
-        val horizontalRadius = memory["horizontalRadius"]
-        val verticalRadius = memory["verticalRadius"]
-        val localizationXcircle = memory["localizationXcircle"]
-        val localizationYcircle = memory["localizationYcircle"]
-        val radius = memory["radius"]
 
-        /* if (colorFigures != null) {
-             drawScriptSkeleton.colorFigures = retrieveColorFromMemory(memory.keys.lastOrNull()!!,memory)
-         }*/
+        if (colorFigures != null) {
+            drawScriptSkeleton.colorFigures = retrieveColorFromMemory("figureColor", memory)
+        }
 
         if (backgroundColorValue != null) {
             val backgroundColor = retrieveColorFromMemory("background", memory)
@@ -162,53 +172,11 @@ data class Interpreter(
 
         }
 
+        drawScriptSkeleton.memory = memory
 
 
-        if (localizationXsquare != null && localizationYsquare != null) {
-            drawScriptSkeleton.localizationXsquare = localizationXsquare
-            drawScriptSkeleton.localizationYsquare = localizationYsquare
-
-        }
 
 
-        if (sideLengthSquare != null) {
-            drawScriptSkeleton.sideLengthSquare = sideLengthSquare
-
-        }
-
-        if (widthRectangle != null && heightRectangle != null) {
-            drawScriptSkeleton.widthRectangle = widthRectangle
-            drawScriptSkeleton.heightRectangle = heightRectangle
-
-        }
-
-        if (localizationXrectangle != null && localizationYrectangle != null) {
-            drawScriptSkeleton.localizationXrectangle = localizationXrectangle
-            drawScriptSkeleton.localizationYrectangle = localizationYrectangle
-
-        }
-
-        if (localizationXellipse != null && localizationYellipse != null) {
-            drawScriptSkeleton.localizationXellipse = localizationXellipse
-            drawScriptSkeleton.localizationYellipse = localizationYellipse
-
-        }
-
-        if (horizontalRadius != null && verticalRadius != null) {
-            drawScriptSkeleton.horizontalRadius = horizontalRadius
-            drawScriptSkeleton.verticalRadius = verticalRadius
-
-        }
-
-        if (localizationXcircle != null && localizationYcircle != null) {
-            drawScriptSkeleton.localizationXcircle = localizationXcircle
-            drawScriptSkeleton.localizationYcircle = localizationYcircle
-
-        }
-
-        if (radius != null) {
-            drawScriptSkeleton.radius = radius
-        }
 
 
         // Perform other actions with the memory values if needed
@@ -217,7 +185,10 @@ data class Interpreter(
         val frame = JFrame("DrawScript")
         frame.contentPane.add(drawScriptSkeleton)
         frame.defaultCloseOperation = JFrame.EXIT_ON_CLOSE
-        frame.setSize(memory["dimension_width"] ?: 800, memory["dimension_height"] ?: 600)
+        val dimensionWidth = memory["dimension_width"]?.toString()?.toIntOrNull() ?: 800
+        val dimensionHeight = memory["dimension_height"]?.toString()?.toIntOrNull() ?: 600
+        frame.setSize(dimensionWidth, dimensionHeight)
+
 
         frame.isVisible = true
 
@@ -225,7 +196,7 @@ data class Interpreter(
     }
 
 
-    private fun calculateColorValue(color: Color, memory: MutableMap<String, Int>): Int {
+    private fun calculateColorValue(color: Color, memory: MutableMap<String, Any>): Int {
         val rValue = calculateExpression(color.rValue, memory)
         val gValue = color.gValue?.let { calculateExpression(it, memory) } ?: 0
         val bValue = color.bValue?.let { calculateExpression(it, memory) } ?: 0
@@ -234,10 +205,10 @@ data class Interpreter(
         return (rValue and 0xFF) shl 16 or ((gValue and 0xFF) shl 8) or (bValue and 0xFF)
     }
 
-    private fun calculateExpression(expression: Expression, memory: MutableMap<String, Int>): Int {
+    private fun calculateExpression(expression: Expression, memory: MutableMap<String, Any>): Int {
         print(memory)
         return when (expression) {
-            is Variable -> memory[expression.valId]!!
+            is Variable -> memory[expression.valId]!! as Int
             is Literal -> expression.value
             is BinaryExpression -> {
                 val left = calculateExpression(expression.left, memory)
@@ -287,8 +258,8 @@ data class Interpreter(
     }
 
 
-    private fun retrieveColorFromMemory(key: String, memory: MutableMap<String, Int>): java.awt.Color {
-        val colorValue = memory[key] ?: throw IllegalArgumentException("Color value not found in memory")
+    private fun retrieveColorFromMemory(key: String, memory: MutableMap<String, Any>): java.awt.Color {
+        val colorValue: Int = memory[key] as? Int ?: throw IllegalArgumentException("Color value not found in memory")
 
         // Extract the individual RGB components from the color value using bit shifting and masking
         val rValue = (colorValue shr 16) and 0xFF
@@ -298,28 +269,26 @@ data class Interpreter(
         // Create a Color object with the extracted RGB values
         return java.awt.Color(rValue, gValue, bValue)
     }
+
 }
 
 class DrawScriptSkeleton : JComponent() {
     var customBackground: java.awt.Color? = null
     var colorFigures: java.awt.Color? = java.awt.Color(0, 0, 0)
-    var localizationXsquare: Int? = 0
-    var localizationYsquare: Int? = 0
-    var sideLengthSquare: Int? = 0
-    var widthRectangle: Int? = 0
-    var heightRectangle: Int? = 0
-    var localizationXrectangle: Int? = 0
-    var localizationYrectangle: Int? = 0
-    var localizationXellipse: Int? = 0
-    var localizationYellipse: Int? = 0
-    var horizontalRadius: Int? = 0
-    var verticalRadius: Int? = 0
-    var localizationXcircle: Int? = 0
-    var localizationYcircle: Int? = 0
-    var radius: Int? = 0
+    var memory: MutableMap<String, Any> = mutableMapOf()
+
+
+
+
+
+
+
+    //pass to int
+
 
 
     override fun paintComponent(g: Graphics) {
+
         super.paintComponent(g)
 
         // Set the custom background color if available
@@ -328,16 +297,55 @@ class DrawScriptSkeleton : JComponent() {
             g.fillRect(0, 0, width, height)
         }
 
-        colorFigures?.let {
-            g.color = it
-            g.fillRect(localizationXsquare!!, localizationYsquare!!, sideLengthSquare!!, sideLengthSquare!!)
-            g.fillRect(localizationXrectangle!!, localizationYrectangle!!, widthRectangle!!, heightRectangle!!)
-            g.fillOval(localizationXellipse!!, localizationYellipse!!, horizontalRadius!!, verticalRadius!!)
-            g.fillOval(localizationXcircle!!, localizationYcircle!!, radius!!, radius!!)
+        memory.forEach { (figureId, figureData) ->
+            val mutableFigureData = figureData as? MutableMap<String, Any>
+            mutableFigureData?.let { data ->
+                when {
+                    "sideLength" in data -> {
+                        val x = data["localizationX"] as? Int ?: 0
+                        val y = data["localizationY"] as? Int ?: 0
+                        val sideLength = data["sideLength"] as? Int ?: 0
+
+                        colorFigures?.let {
+                            g.color = it
+                            g.fillRect(x, y, sideLength, sideLength)
+                        }
+                    }
+                    "width" in data && "height" in data -> {
+                        val x = data["localizationX"] as? Int ?: 0
+                        val y = data["localizationY"] as? Int ?: 0
+                        val width = data["width"] as? Int ?: 0
+                        val height = data["height"] as? Int ?: 0
+
+                        colorFigures?.let {
+                            g.color = it
+                            g.fillRect(x, y, width, height)
+                        }
+                    }
+                    "horizontalRadius" in data && "verticalRadius" in data -> {
+                        val x = data["localizationX"] as? Int ?: 0
+                        val y = data["localizationY"] as? Int ?: 0
+                        val horizontalRadius = data["horizontalRadius"] as? Int ?: 0
+                        val verticalRadius = data["verticalRadius"] as? Int ?: 0
+
+                        colorFigures?.let {
+                            g.color = it
+                            g.fillOval(x, y, horizontalRadius, verticalRadius)
+                        }
+                    }
+                    "radius" in data -> {
+                        val x = data["localizationX"] as? Int ?: 0
+                        val y = data["localizationY"] as? Int ?: 0
+                        val radius = data["radius"] as? Int ?: 0
+
+                        colorFigures?.let {
+                            g.color = it
+                            g.fillOval(x, y, radius, radius)
+                        }
+                    }
+                }
+            }
         }
-
-
-        // Perform other custom painting operations
     }
 
 }

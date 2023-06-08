@@ -4,10 +4,7 @@ import expressions.BinaryExpression
 import expressions.Literal
 import expressions.Operator
 import expressions.Variable
-import instructions.Circle
-import instructions.Ellipse
-import instructions.Rectangle
-import instructions.Square
+import instructions.*
 import properties.Background
 import properties.Dimension
 import types.Color
@@ -25,7 +22,11 @@ fun main() {
             Constant("N", types.Integer(Literal(100))),
             Constant("R", types.Integer(Literal(80))),
             Constant("Red", Color(Literal(255), null, null)),
-            Constant("White", Color(Literal(255), Literal(255), Literal(255)))
+            Constant("White", Color(Literal(255), Literal(255), Literal(255))),
+            Constant("Green", Color(Literal(0), Literal(255), Literal(0)))
+
+
+
 
         ),
         listOf(
@@ -46,6 +47,13 @@ fun main() {
                             Literal(200)
                         ),
                         Literal(200)
+                    ),
+                    Square(
+                        Localization(
+                            Literal(200),
+                            Literal(500)
+                        ),
+                        Literal(200)
                     )
                 ), listOf(
                     Rectangle(
@@ -58,6 +66,7 @@ fun main() {
                     )
                 )
             ),
+            FigureColor("Green"),
             Ellipse(
                 Localization(
                     Literal(500),
@@ -66,13 +75,22 @@ fun main() {
                 Literal(200),
                 Literal(100)
             ),
+            FigureColor("Green"),
             Circle(
                 Localization(
                     Literal(800),
                     Literal(500)
                 ),
                 Literal(300)
-            )
+            ),
+
+            Circle(
+                Localization(
+                    Literal(800),
+                    Literal(50)
+                ),
+                Literal(300)
+            ),
         )
     )
 

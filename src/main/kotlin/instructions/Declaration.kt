@@ -3,22 +3,20 @@ package instructions
 import types.Color
 
 open class Declaration(
-    open val identity: String,
+
 ):Instruction
 
 class FigureColor(
-    override val identity: String,
     val color: String
-): Declaration(identity) {
+): Declaration() {
     override fun toString(): String {
-        return "color(identity: $identity, color: $color)"
+        return "figureColor(color: $color)"
     }
 }
 
 class Line(
-    override val identity: String,
     val color: Color,
-): Declaration(identity) {
+): Declaration() {
     override fun toString(): String {
         return "line(color: $color)"
     }
