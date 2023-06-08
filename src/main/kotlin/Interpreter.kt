@@ -71,6 +71,14 @@ data class Interpreter(
                                 memory["lineColor"] = lineColor
                             }
                         }
+
+
+                        is Fill -> {
+                            val Id = generateUniqueFigureId()
+                            val colorValue = retrieveColorFromMemory(instruction.color, memory)
+                            memory[Id] = colorValue
+
+                        }
                         // Handle other types of declarations if needed
                     }
                 }
@@ -295,79 +303,102 @@ class DrawScriptSkeleton : JComponent() {
             g.fillRect(0, 0, width, height)
         }
 
-        memory.forEach { (figureId, figureData) ->
-            val mutableFigureData = figureData as? MutableMap<String, Any>
-            mutableFigureData?.let { data ->
-                when {
-                    "sideLength" in data -> {
-                        val x = data["localizationX"] as? Int ?: 0
-                        val y = data["localizationY"] as? Int ?: 0
-                        val sideLength = data["sideLength"] as? Int ?: 0
+        memory.forEach { (key, value) ->
 
-                        colorFigures?.let {
-                            g.color = it
-                            g.fillRect(x, y, sideLength, sideLength)
+            when (value) {
+                is MutableMap<*, *> -> {
+                    val mutableFigureData = value as? MutableMap<*, *>
+
+                    mutableFigureData?.let { data ->
+                        when {
+                            "sideLength" in data -> {
+                                val x = data["localizationX"] as? Int ?: 0
+                                val y = data["localizationY"] as? Int ?: 0
+                                val sideLength = data["sideLength"] as? Int ?: 0
+
+                                colorFigures?.let {
+                                    g.color = it
+                                    g.fillRect(x, y, sideLength, sideLength)
 
 
-                            lineColor?.let { lineColor ->
-                                g.color = lineColor
-                                g.drawRect(x, y, sideLength, sideLength)
+                                    lineColor?.let { lineColor ->
+                                        g.color = lineColor
+                                        g.drawRect(x, y, sideLength, sideLength)
+                                    }
+                                }
+                            }
+
+                            "width" in data && "height" in data -> {
+                                val x = data["localizationX"] as? Int ?: 0
+                                val y = data["localizationY"] as? Int ?: 0
+                                val width = data["width"] as? Int ?: 0
+                                val height = data["height"] as? Int ?: 0
+
+                                colorFigures?.let {
+                                    g.color = it
+                                    g.fillRect(x, y, width, height)
+
+                                    lineColor?.let { lineColor ->
+                                        g.color = lineColor
+                                        g.drawRect(x, y, width, height)
+                                    }
+
+                                }
+                            }
+
+                            "horizontalRadius" in data && "verticalRadius" in data -> {
+                                val x = data["localizationX"] as? Int ?: 0
+                                val y = data["localizationY"] as? Int ?: 0
+                                val horizontalRadius = data["horizontalRadius"] as? Int ?: 0
+                                val verticalRadius = data["verticalRadius"] as? Int ?: 0
+
+                                colorFigures?.let {
+                                    g.color = it
+                                    g.fillOval(x, y, horizontalRadius, verticalRadius)
+
+                                    lineColor?.let { lineColor ->
+                                        g.color = lineColor
+                                        g.drawOval(x, y, horizontalRadius, verticalRadius)
+                                    }
+                                }
+                            }
+
+                            "radius" in data -> {
+                                val x = data["localizationX"] as? Int ?: 0
+                                val y = data["localizationY"] as? Int ?: 0
+                                val radius = data["radius"] as? Int ?: 0
+
+                                colorFigures?.let {
+                                    g.color = it
+                                    g.fillOval(x, y, radius, radius)
+
+                                    lineColor?.let { lineColor ->
+                                        g.color = lineColor
+                                        g.drawOval(x, y, radius, radius)
+                                    }
+                                }
+                            }
+
+                            else -> {
+                                throw IllegalArgumentException("Unknown figure type")
                             }
                         }
                     }
 
-                    "width" in data && "height" in data -> {
-                        val x = data["localizationX"] as? Int ?: 0
-                        val y = data["localizationY"] as? Int ?: 0
-                        val width = data["width"] as? Int ?: 0
-                        val height = data["height"] as? Int ?: 0
 
-                        colorFigures?.let {
-                            g.color = it
-                            g.fillRect(x, y, width, height)
 
-                            lineColor?.let { lineColor ->
-                                g.color = lineColor
-                                g.drawRect(x, y, width, height)
-                            }
 
-                        }
-                    }
 
-                    "horizontalRadius" in data && "verticalRadius" in data -> {
-                        val x = data["localizationX"] as? Int ?: 0
-                        val y = data["localizationY"] as? Int ?: 0
-                        val horizontalRadius = data["horizontalRadius"] as? Int ?: 0
-                        val verticalRadius = data["verticalRadius"] as? Int ?: 0
+                }
 
-                        colorFigures?.let {
-                            g.color = it
-                            g.fillOval(x, y, horizontalRadius, verticalRadius)
+                is java.awt.Color -> {
+                    val color = value as? java.awt.Color
+                    colorFigures = color
 
-                            lineColor?.let { lineColor ->
-                                g.color = lineColor
-                                g.drawOval(x, y, horizontalRadius, verticalRadius)
-                            }
-                        }
-                    }
-
-                    "radius" in data -> {
-                        val x = data["localizationX"] as? Int ?: 0
-                        val y = data["localizationY"] as? Int ?: 0
-                        val radius = data["radius"] as? Int ?: 0
-
-                        colorFigures?.let {
-                            g.color = it
-                            g.fillOval(x, y, radius, radius)
-
-                            lineColor?.let { lineColor ->
-                                g.color = lineColor
-                                g.drawOval(x, y, radius, radius)
-                            }
-                        }
-                    }
                 }
             }
+            //val mutableFigureData = figureData as? MutableMap<String, Any>
+
         }
     }
 
