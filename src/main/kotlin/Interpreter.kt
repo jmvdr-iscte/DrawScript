@@ -32,7 +32,7 @@ data class Interpreter(
         for (property in script.properties) {
             when (property) {
                 is Background -> {
-                    val colorValue  = memory[property.color]
+                    val colorValue = memory[property.color]
                     if (colorValue != null) {
                         memory["background"] = colorValue
                     } else {
@@ -85,11 +85,8 @@ data class Interpreter(
                                 "localizationY" to calculateExpression(localization.yValue, memory),
                                 "sideLength" to calculateExpression(instruction.sideLength, memory)
                             )
-
-
-
                             memory[figureId] = figureMemory
-                           }
+                        }
 
                         is Rectangle -> {
                             val localization = instruction.localization
@@ -102,7 +99,7 @@ data class Interpreter(
                             )
 
                             memory[figureId] = figureMemory
-                            }
+                        }
 
                         is Ellipse -> {
                             val localization = instruction.localization
@@ -116,7 +113,7 @@ data class Interpreter(
                             )
                             memory[figureId] = figureMemory
 
-                           }
+                        }
 
                         is Circle -> {
                             val localization = instruction.localization
@@ -127,7 +124,7 @@ data class Interpreter(
                                 "radius" to calculateExpression(instruction.radius, memory)
                             )
                             memory[figureId] = figureMemory
-                            }
+                        }
                         // Handle other types of figures if needed
                     }
                 }
@@ -135,14 +132,23 @@ data class Interpreter(
                 is ControlStructure -> {
                     when (instruction) {
                         is IfElse -> {
-                            val guardResult = calculateExpression(instruction.guard, memory )
+                            val guardResult = calculateExpression(instruction.guard, memory)
                             val sequenceToExecute =
                                 if (guardResult == 0) instruction.sequence else instruction.alternative
                             sequenceToExecute?.let { sequence ->
                                 executeInstructions(sequence, memory)
                             }
                         }
-                        // Handle other types of control structures if needed
+
+                        is ForLoop -> {
+                            val initial = calculateExpression(instruction.interval.lowerLimit, memory)
+                            val end = calculateExpression(instruction.interval.higherLimit, memory)
+                            for (value in initial until end) {
+
+                                memory[instruction.initialCharacter.valId] = value
+                                executeInstructions(instruction.sequence, memory)
+                            }
+                        }
                     }
                 }
                 // Handle other types of instructions if needed
@@ -180,10 +186,6 @@ data class Interpreter(
         drawScriptSkeleton.memory = memory
 
 
-
-
-
-
         // Perform other actions with the memory values if needed
 
         // Display the DrawScriptSkeleton component
@@ -196,7 +198,6 @@ data class Interpreter(
 
 
         frame.isVisible = true
-
 
     }
 
@@ -211,7 +212,6 @@ data class Interpreter(
     }
 
     private fun calculateExpression(expression: Expression, memory: MutableMap<String, Any>): Int {
-        print(memory)
         return when (expression) {
             is Variable -> memory[expression.valId]!! as Int
             is Literal -> expression.value
@@ -315,6 +315,7 @@ class DrawScriptSkeleton : JComponent() {
                             }
                         }
                     }
+
                     "width" in data && "height" in data -> {
                         val x = data["localizationX"] as? Int ?: 0
                         val y = data["localizationY"] as? Int ?: 0
@@ -332,6 +333,7 @@ class DrawScriptSkeleton : JComponent() {
 
                         }
                     }
+
                     "horizontalRadius" in data && "verticalRadius" in data -> {
                         val x = data["localizationX"] as? Int ?: 0
                         val y = data["localizationY"] as? Int ?: 0
@@ -348,6 +350,7 @@ class DrawScriptSkeleton : JComponent() {
                             }
                         }
                     }
+
                     "radius" in data -> {
                         val x = data["localizationX"] as? Int ?: 0
                         val y = data["localizationY"] as? Int ?: 0
