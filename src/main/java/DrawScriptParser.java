@@ -1262,11 +1262,11 @@ public class DrawScriptParser extends Parser {
 			return getRuleContext(ExpressionContext.class,i);
 		}
 		public TerminalNode CLOSEDPARENTESIS() { return getToken(DrawScriptParser.CLOSEDPARENTESIS, 0); }
-		public TerminalNode MOD() { return getToken(DrawScriptParser.MOD, 0); }
-		public TerminalNode PLUS() { return getToken(DrawScriptParser.PLUS, 0); }
-		public TerminalNode MINUS() { return getToken(DrawScriptParser.MINUS, 0); }
 		public TerminalNode DIVIDE() { return getToken(DrawScriptParser.DIVIDE, 0); }
 		public TerminalNode TIMES() { return getToken(DrawScriptParser.TIMES, 0); }
+		public TerminalNode PLUS() { return getToken(DrawScriptParser.PLUS, 0); }
+		public TerminalNode MINUS() { return getToken(DrawScriptParser.MINUS, 0); }
+		public TerminalNode MOD() { return getToken(DrawScriptParser.MOD, 0); }
 		public TerminalNode EQUALS() { return getToken(DrawScriptParser.EQUALS, 0); }
 		public ExpressionContext(ParserRuleContext parent, int invokingState) {
 			super(parent, invokingState);
@@ -1357,7 +1357,7 @@ public class DrawScriptParser extends Parser {
 						setState(165);
 						if (!(precpred(_ctx, 6))) throw new FailedPredicateException(this, "precpred(_ctx, 6)");
 						setState(166);
-						match(MOD);
+						match(DIVIDE);
 						setState(167);
 						expression(7);
 						}
@@ -1369,7 +1369,7 @@ public class DrawScriptParser extends Parser {
 						setState(168);
 						if (!(precpred(_ctx, 5))) throw new FailedPredicateException(this, "precpred(_ctx, 5)");
 						setState(169);
-						match(PLUS);
+						match(TIMES);
 						setState(170);
 						expression(6);
 						}
@@ -1381,7 +1381,7 @@ public class DrawScriptParser extends Parser {
 						setState(171);
 						if (!(precpred(_ctx, 4))) throw new FailedPredicateException(this, "precpred(_ctx, 4)");
 						setState(172);
-						match(MINUS);
+						match(PLUS);
 						setState(173);
 						expression(5);
 						}
@@ -1393,7 +1393,7 @@ public class DrawScriptParser extends Parser {
 						setState(174);
 						if (!(precpred(_ctx, 3))) throw new FailedPredicateException(this, "precpred(_ctx, 3)");
 						setState(175);
-						match(DIVIDE);
+						match(MINUS);
 						setState(176);
 						expression(4);
 						}
@@ -1405,7 +1405,7 @@ public class DrawScriptParser extends Parser {
 						setState(177);
 						if (!(precpred(_ctx, 2))) throw new FailedPredicateException(this, "precpred(_ctx, 2)");
 						setState(178);
-						match(TIMES);
+						match(MOD);
 						setState(179);
 						expression(3);
 						}
@@ -1917,35 +1917,35 @@ public class DrawScriptParser extends Parser {
 		"$\u0012\u0007\u00a2\u00a4\u0001\u0000\u0000\u0000\u00a3\u009a\u0001\u0000"+
 		"\u0000\u0000\u00a3\u009c\u0001\u0000\u0000\u0000\u00a3\u009d\u0001\u0000"+
 		"\u0000\u0000\u00a3\u009e\u0001\u0000\u0000\u0000\u00a4\u00b9\u0001\u0000"+
-		"\u0000\u0000\u00a5\u00a6\n\u0006\u0000\u0000\u00a6\u00a7\u0005\u0010\u0000"+
+		"\u0000\u0000\u00a5\u00a6\n\u0006\u0000\u0000\u00a6\u00a7\u0005\u000f\u0000"+
 		"\u0000\u00a7\u00b8\u0003$\u0012\u0007\u00a8\u00a9\n\u0005\u0000\u0000"+
-		"\u00a9\u00aa\u0005\f\u0000\u0000\u00aa\u00b8\u0003$\u0012\u0006\u00ab"+
-		"\u00ac\n\u0004\u0000\u0000\u00ac\u00ad\u0005\r\u0000\u0000\u00ad\u00b8"+
+		"\u00a9\u00aa\u0005\u000e\u0000\u0000\u00aa\u00b8\u0003$\u0012\u0006\u00ab"+
+		"\u00ac\n\u0004\u0000\u0000\u00ac\u00ad\u0005\f\u0000\u0000\u00ad\u00b8"+
 		"\u0003$\u0012\u0005\u00ae\u00af\n\u0003\u0000\u0000\u00af\u00b0\u0005"+
-		"\u000f\u0000\u0000\u00b0\u00b8\u0003$\u0012\u0004\u00b1\u00b2\n\u0002"+
-		"\u0000\u0000\u00b2\u00b3\u0005\u000e\u0000\u0000\u00b3\u00b8\u0003$\u0012"+
-		"\u0003\u00b4\u00b5\n\u0001\u0000\u0000\u00b5\u00b6\u0005\u0011\u0000\u0000"+
-		"\u00b6\u00b8\u0003$\u0012\u0002\u00b7\u00a5\u0001\u0000\u0000\u0000\u00b7"+
-		"\u00a8\u0001\u0000\u0000\u0000\u00b7\u00ab\u0001\u0000\u0000\u0000\u00b7"+
-		"\u00ae\u0001\u0000\u0000\u0000\u00b7\u00b1\u0001\u0000\u0000\u0000\u00b7"+
-		"\u00b4\u0001\u0000\u0000\u0000\u00b8\u00bb\u0001\u0000\u0000\u0000\u00b9"+
-		"\u00b7\u0001\u0000\u0000\u0000\u00b9\u00ba\u0001\u0000\u0000\u0000\u00ba"+
-		"%\u0001\u0000\u0000\u0000\u00bb\u00b9\u0001\u0000\u0000\u0000\u00bc\u00bd"+
-		"\u0005\u0006\u0000\u0000\u00bd\u00be\u0003$\u0012\u0000\u00be\u00bf\u0005"+
-		"\u0015\u0000\u0000\u00bf\u00c0\u0003$\u0012\u0000\u00c0\u00c1\u0005\u0006"+
-		"\u0000\u0000\u00c1\'\u0001\u0000\u0000\u0000\u00c2\u00cc\u0005\t\u0000"+
-		"\u0000\u00c3\u00cc\u0005\n\u0000\u0000\u00c4\u00c6\u0003,\u0016\u0000"+
-		"\u00c5\u00c7\u0003.\u0017\u0000\u00c6\u00c5\u0001\u0000\u0000\u0000\u00c6"+
-		"\u00c7\u0001\u0000\u0000\u0000\u00c7\u00c9\u0001\u0000\u0000\u0000\u00c8"+
-		"\u00ca\u00030\u0018\u0000\u00c9\u00c8\u0001\u0000\u0000\u0000\u00c9\u00ca"+
-		"\u0001\u0000\u0000\u0000\u00ca\u00cc\u0001\u0000\u0000\u0000\u00cb\u00c2"+
-		"\u0001\u0000\u0000\u0000\u00cb\u00c3\u0001\u0000\u0000\u0000\u00cb\u00c4"+
-		"\u0001\u0000\u0000\u0000\u00cc)\u0001\u0000\u0000\u0000\u00cd\u00ce\u0005"+
-		"\u0007\u0000\u0000\u00ce+\u0001\u0000\u0000\u0000\u00cf\u00d0\u0005\u000b"+
-		"\u0000\u0000\u00d0-\u0001\u0000\u0000\u0000\u00d1\u00d2\u0005\u000b\u0000"+
-		"\u0000\u00d2/\u0001\u0000\u0000\u0000\u00d3\u00d4\u0005\u000b\u0000\u0000"+
-		"\u00d41\u0001\u0000\u0000\u0000\u000f?ISYdnu\u0084\u0094\u00a3\u00b7\u00b9"+
-		"\u00c6\u00c9\u00cb";
+		"\r\u0000\u0000\u00b0\u00b8\u0003$\u0012\u0004\u00b1\u00b2\n\u0002\u0000"+
+		"\u0000\u00b2\u00b3\u0005\u0010\u0000\u0000\u00b3\u00b8\u0003$\u0012\u0003"+
+		"\u00b4\u00b5\n\u0001\u0000\u0000\u00b5\u00b6\u0005\u0011\u0000\u0000\u00b6"+
+		"\u00b8\u0003$\u0012\u0002\u00b7\u00a5\u0001\u0000\u0000\u0000\u00b7\u00a8"+
+		"\u0001\u0000\u0000\u0000\u00b7\u00ab\u0001\u0000\u0000\u0000\u00b7\u00ae"+
+		"\u0001\u0000\u0000\u0000\u00b7\u00b1\u0001\u0000\u0000\u0000\u00b7\u00b4"+
+		"\u0001\u0000\u0000\u0000\u00b8\u00bb\u0001\u0000\u0000\u0000\u00b9\u00b7"+
+		"\u0001\u0000\u0000\u0000\u00b9\u00ba\u0001\u0000\u0000\u0000\u00ba%\u0001"+
+		"\u0000\u0000\u0000\u00bb\u00b9\u0001\u0000\u0000\u0000\u00bc\u00bd\u0005"+
+		"\u0006\u0000\u0000\u00bd\u00be\u0003$\u0012\u0000\u00be\u00bf\u0005\u0015"+
+		"\u0000\u0000\u00bf\u00c0\u0003$\u0012\u0000\u00c0\u00c1\u0005\u0006\u0000"+
+		"\u0000\u00c1\'\u0001\u0000\u0000\u0000\u00c2\u00cc\u0005\t\u0000\u0000"+
+		"\u00c3\u00cc\u0005\n\u0000\u0000\u00c4\u00c6\u0003,\u0016\u0000\u00c5"+
+		"\u00c7\u0003.\u0017\u0000\u00c6\u00c5\u0001\u0000\u0000\u0000\u00c6\u00c7"+
+		"\u0001\u0000\u0000\u0000\u00c7\u00c9\u0001\u0000\u0000\u0000\u00c8\u00ca"+
+		"\u00030\u0018\u0000\u00c9\u00c8\u0001\u0000\u0000\u0000\u00c9\u00ca\u0001"+
+		"\u0000\u0000\u0000\u00ca\u00cc\u0001\u0000\u0000\u0000\u00cb\u00c2\u0001"+
+		"\u0000\u0000\u0000\u00cb\u00c3\u0001\u0000\u0000\u0000\u00cb\u00c4\u0001"+
+		"\u0000\u0000\u0000\u00cc)\u0001\u0000\u0000\u0000\u00cd\u00ce\u0005\u0007"+
+		"\u0000\u0000\u00ce+\u0001\u0000\u0000\u0000\u00cf\u00d0\u0005\u000b\u0000"+
+		"\u0000\u00d0-\u0001\u0000\u0000\u0000\u00d1\u00d2\u0005\u000b\u0000\u0000"+
+		"\u00d2/\u0001\u0000\u0000\u0000\u00d3\u00d4\u0005\u000b\u0000\u0000\u00d4"+
+		"1\u0001\u0000\u0000\u0000\u000f?ISYdnu\u0084\u0094\u00a3\u00b7\u00b9\u00c6"+
+		"\u00c9\u00cb";
 	public static final ATN _ATN =
 		new ATNDeserializer().deserialize(_serializedATN.toCharArray());
 	static {

@@ -55,7 +55,11 @@ fun DrawScriptParser.ValueContext.toAst(): Type {
 
         else -> {
             val rValue = r().COLOR()
-            return Color(Literal(parseColor(rValue.text)), Literal(0), Literal(0))
+            return Color(
+                Literal(parseColor(rValue.text)),
+                Literal(parseColor(rValue.text)),
+                Literal(parseColor(rValue.text))
+            )
         }
     }
 }
@@ -249,7 +253,7 @@ fun DrawScriptParser.ControlStructureContext.toAst(): Instruction {
 fun main() {
     val input = "N: 8\n" +
             "SIDE: 40\n" +
-            "MARGIN: 5\n" +
+            "MARGIN: 0\n" +
             "BLACK: |0|\n" +
             "WHITE: |255|\n" +
             "GRAY: |128|\n" +
@@ -258,6 +262,7 @@ fun main() {
             "background: GRAY\n" +
             "---\n" +
             "color BLACK\n" +
+            "rectangle MARGIN,MARGIN N*SIDE ~ N*SIDE\n" +
             "for l in [0,N[\n" +
             "  for c in [0,N[\n" +
             "    if (l + c) % 2 = 0\n" +
@@ -268,13 +273,14 @@ fun main() {
             "    square c * SIDE + MARGIN,l * SIDE + MARGIN SIDE\n" +
             "  _\n" +
             "_\n" +
-            "line 0|0|255|\n" +
-            "ellipse MARGIN,MARGIN N*SIDE ~ N*SIDE\n"
+            "line |0|0|255|\n"
 
     val lexer = DrawScriptLexer(CharStreams.fromString(input))
     val parser = DrawScriptParser(CommonTokenStream(lexer))
     val script = parser.script()
-    println(script.toAst())
+    print(script.toAst())
+    val interpreter = Interpreter(script.toAst())
+    interpreter.run()
 }
 
 

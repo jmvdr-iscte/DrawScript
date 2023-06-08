@@ -11,7 +11,7 @@ import java.util.*
 import javax.swing.JComponent
 import javax.swing.JFrame
 
-data class Interpreter(
+open class Interpreter(
     val script: Script,
 ) {
 
@@ -154,6 +154,8 @@ data class Interpreter(
                             for (value in initial until end) {
 
                                 memory[instruction.initialCharacter.valId] = value
+                                //   println("l is  ${memory["l"]}")
+                                // println("c is  ${memory["c"]}")
                                 executeInstructions(instruction.sequence, memory)
                             }
                         }
@@ -179,6 +181,7 @@ data class Interpreter(
 
         if (colorFigures != null) {
             drawScriptSkeleton.colorFigures = retrieveColorFromMemory("figureColor", memory)
+            drawScriptSkeleton.colorCopy = retrieveColorFromMemory("figureColor", memory)
         }
 
         if (lineColor != null) {
@@ -203,8 +206,8 @@ data class Interpreter(
         val dimensionWidth = memory["dimension_width"]?.toString()?.toIntOrNull() ?: 800
         val dimensionHeight = memory["dimension_height"]?.toString()?.toIntOrNull() ?: 600
         frame.setSize(dimensionWidth, dimensionHeight)
-
-
+        // for test proposes
+        //frame.setSize(dimensionWidth+17, dimensionHeight+40)
         frame.isVisible = true
 
     }
@@ -231,6 +234,11 @@ data class Interpreter(
                     Operator.MINUS -> left - right
                     Operator.TIMES -> left * right
                     Operator.DIVIDE -> left / right
+                    Operator.MOD -> {
+                        println("$left % $right")
+                        left % right
+                    }
+
                     Operator.EQUAL -> {
                         if (left == right) {
                             0
@@ -256,15 +264,9 @@ data class Interpreter(
                         }
                     }
 
-                    Operator.MOD -> {
-                        if (left < right) {
-                            0
-                        } else {
-                            1
-                        }
-                    }
                 }
             }
+
 
             else -> 0
         }
@@ -290,7 +292,7 @@ class DrawScriptSkeleton : JComponent() {
     var colorFigures: java.awt.Color? = java.awt.Color(0, 0, 0)
     var memory: MutableMap<String, Any> = mutableMapOf()
     var lineColor: java.awt.Color? = null
-
+    var colorCopy: java.awt.Color? = null
 
 
     override fun paintComponent(g: Graphics) {
@@ -320,6 +322,7 @@ class DrawScriptSkeleton : JComponent() {
                                     g.color = it
                                     g.fillRect(x, y, sideLength, sideLength)
 
+                                    colorFigures = colorCopy
 
                                     lineColor?.let { lineColor ->
                                         g.color = lineColor
@@ -337,6 +340,8 @@ class DrawScriptSkeleton : JComponent() {
                                 colorFigures?.let {
                                     g.color = it
                                     g.fillRect(x, y, width, height)
+
+                                    colorFigures = colorCopy
 
                                     lineColor?.let { lineColor ->
                                         g.color = lineColor
@@ -356,6 +361,8 @@ class DrawScriptSkeleton : JComponent() {
                                     g.color = it
                                     g.fillOval(x, y, horizontalRadius, verticalRadius)
 
+                                    colorFigures = colorCopy
+
                                     lineColor?.let { lineColor ->
                                         g.color = lineColor
                                         g.drawOval(x, y, horizontalRadius, verticalRadius)
@@ -372,6 +379,8 @@ class DrawScriptSkeleton : JComponent() {
                                     g.color = it
                                     g.fillOval(x, y, radius, radius)
 
+                                    colorFigures = colorCopy
+
                                     lineColor?.let { lineColor ->
                                         g.color = lineColor
                                         g.drawOval(x, y, radius, radius)
@@ -384,9 +393,6 @@ class DrawScriptSkeleton : JComponent() {
                             }
                         }
                     }
-
-
-
 
 
                 }

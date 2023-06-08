@@ -38,11 +38,12 @@ constant: constid=ID ':' constval=value;
 
 expression: ID|N|PROPERTYID|
                 OPENPARENTESIS expression CLOSEDPARENTESIS expression|
-                expression MOD expression|
-                expression PLUS expression|
-                expression MINUS expression|
+
                 expression DIVIDE expression|
                 expression TIMES expression|
+                expression PLUS expression|
+                expression MINUS expression|
+                expression MOD expression|
                 expression EQUALS expression;
 
 
