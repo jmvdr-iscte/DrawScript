@@ -1,4 +1,5 @@
 import constants.Constant
+import controlstructures.ForLoop
 import controlstructures.IfElse
 import expressions.BinaryExpression
 import expressions.Literal
@@ -7,10 +8,7 @@ import expressions.Variable
 import instructions.*
 import properties.Background
 import properties.Dimension
-import types.Color
-import types.Integer
-import types.Localization
-import types.Type
+import types.*
 import java.awt.Graphics
 import java.awt.Graphics2D
 import javax.swing.JComponent
@@ -26,8 +24,6 @@ fun main() {
             Constant("Green", Color(Literal(0), Literal(255), Literal(0)))
 
 
-
-
         ),
         listOf(
             Background("Red"),
@@ -38,43 +34,20 @@ fun main() {
 
         ),
         listOf(
-            IfElse(
-                BinaryExpression(Literal(3), Operator.EQUAL, Literal(3)),
-                listOf(
-                    Square(
+            ForLoop(
+                Variable("a"), Interval(Literal(0), Literal(5)), listOf(
+                    FigureColor("Green"),
+                    Ellipse(
                         Localization(
-                            Literal(200),
-                            Literal(200)
+                            BinaryExpression(Literal(50), Operator.TIMES, Variable("a")),
+                            Literal(50)
                         ),
-                        Literal(200)
+                        Literal(20),
+                        Literal(15)
                     ),
-                    Square(
-                        Localization(
-                            Literal(200),
-                            Literal(500)
-                        ),
-                        Literal(200)
-                    )
-                ), listOf(
-                    Rectangle(
-                        Localization(
-                            Literal(100),
-                            Literal(100)
-                        ),
-                        Literal(200),
-                        Literal(100)
-                    )
                 )
             ),
-            FigureColor("Green"),
-            Ellipse(
-                Localization(
-                    Literal(500),
-                    Literal(500)
-                ),
-                Literal(200),
-                Literal(100)
-            ),
+
             FigureColor("Green"),
             Circle(
                 Localization(

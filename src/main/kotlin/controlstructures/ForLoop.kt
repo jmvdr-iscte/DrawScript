@@ -9,5 +9,4 @@ data class ForLoop(
     val initialCharacter: Variable,
     val interval: Interval,
     val sequence: List<Instruction>,
-    var current: SequenceIterator?
 ) : ControlStructure
