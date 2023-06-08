@@ -106,6 +106,12 @@ public interface DrawScriptVisitor<T> extends ParseTreeVisitor<T> {
 	 */
 	T visitDeclaration(DrawScriptParser.DeclarationContext ctx);
 	/**
+	 * Visit a parse tree produced by {@link DrawScriptParser#decvalue}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitDecvalue(DrawScriptParser.DecvalueContext ctx);
+	/**
 	 * Visit a parse tree produced by {@link DrawScriptParser#constant}.
 	 * @param ctx the parse tree
 	 * @return the visitor result

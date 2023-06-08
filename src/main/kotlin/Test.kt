@@ -1,6 +1,5 @@
 import constants.Constant
 import controlstructures.ForLoop
-import controlstructures.IfElse
 import expressions.BinaryExpression
 import expressions.Literal
 import expressions.Operator
@@ -9,10 +8,6 @@ import instructions.*
 import properties.Background
 import properties.Dimension
 import types.*
-import java.awt.Graphics
-import java.awt.Graphics2D
-import javax.swing.JComponent
-import javax.swing.JFrame
 
 fun main() {
     val script = Script(

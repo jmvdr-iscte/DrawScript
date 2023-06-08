@@ -26,6 +26,7 @@ class Fill(
     val color: String
 ): Declaration() {
     override fun toString(): String {
-        return "Fill(color: $color)"
+        return "fill(color: $color)"
+
     }
 }

@@ -1,4 +1,3 @@
-/*
 import constants.Constant
 import controlstructures.ForLoop
 import controlstructures.IfElse
@@ -145,25 +144,8 @@ fun DrawScriptParser.InstructionListContext.toAst(): List<Instruction> {
 
 fun DrawScriptParser.InstructionContext.toAst(): Instruction {
     return when {
-        declaration() != null && declaration().expression() != null -> {
-            val identity = declaration().id.text
-            val value = declaration().expression().toAst()
-            Declaration(identity, Text(value))
-        }
-
-        declaration() != null && declaration().r() != null && declaration().g() != null && declaration().b() != null -> {
-            val identity = declaration().id.text
-            val rValue = declaration().r()
-            val gValue = declaration().g()
-            val bValue = declaration().b()
-            Declaration(
-                identity,
-                Color(
-                    Literal(parseColor(rValue.text)),
-                    Literal(parseColor(gValue.text)),
-                    Literal(parseColor(bValue.text))
-                )
-            )
+        declaration() != null -> {
+            declaration().toAst()
         }
 
         controlStructure() != null -> {
@@ -177,6 +159,30 @@ fun DrawScriptParser.InstructionContext.toAst(): Instruction {
         else -> {
             throw IllegalArgumentException("Invalid Instruction")
         }
+    }
+}
+
+fun DrawScriptParser.DeclarationContext.toAst(): Declaration {
+    return when {
+        id.text.equals("color") -> {
+            FigureColor(decvalue().text)
+        }
+
+        id.text.equals("line") -> {
+            Line(
+                Color(
+                    Literal(parseColor(decvalue().r().text)),
+                    Literal(parseColor(decvalue().g().text)),
+                    Literal(parseColor(decvalue().b().text))
+                )
+            )
+        }
+
+        id.text.equals("fill") -> {
+            Fill(decvalue().text)
+        }
+
+        else -> throw IllegalArgumentException("Invalid Declaration")
     }
 }
 
@@ -197,11 +203,11 @@ fun DrawScriptParser.FigureContext.toAst(): Figure {
             val localizationX = expression(0).toAst()
             val localizationY = expression(1).toAst()
             val leftParameter = figureshape().doubleparameter().expression(0).toAst()
-            val rectangleHeight = figureshape().doubleparameter().expression(1).toAst()
+            val rightParameter = figureshape().doubleparameter().expression(1).toAst()
             if (id.text == "rectangle") {
-                return Rectangle(Localization(localizationX, localizationY), leftParameter, rectangleHeight)
+                return Rectangle(Localization(localizationX, localizationY), leftParameter, rightParameter)
             } else if (id.text == "ellipse") {
-                return Ellipse(Localization(localizationX, localizationY), leftParameter, rectangleHeight)
+                return Ellipse(Localization(localizationX, localizationY), leftParameter, rightParameter)
             }
         }
     }
@@ -211,36 +217,33 @@ fun DrawScriptParser.FigureContext.toAst(): Figure {
 
 
 fun DrawScriptParser.ControlStructureContext.toAst(): Instruction {
-        when {
-            ifStatement() != null -> {
-                val ifStmt = ifStatement()
-                val guard = ifStmt.expression().toAst()
-                val sequence = ifStmt.instructionList(0).toAst()
-                val alternative = if (ifStmt.instructionList().size > 1) {
-                    ifStmt.instructionList(1).toAst()
-                } else {
-                    null
-                }
-                return IfElse(guard, sequence, alternative)
+    when {
+        ifStatement() != null -> {
+            val ifStmt = ifStatement()
+            val guard = ifStmt.expression().toAst()
+            val sequence = ifStmt.instructionList(0).toAst()
+            val alternative = if (ifStmt.instructionList().size > 1) {
+                ifStmt.instructionList(1).toAst()
+            } else {
+                null
             }
+            return IfElse(guard, sequence, alternative)
+        }
 
-            forLoop() != null -> {
-                val forLoopStmt = forLoop()
-                val loopVariable = forLoopStmt.PROPERTYID().text
-                val lowerLimit = forLoopStmt.interval().expression(0).toAst()
-                val higherLimit = forLoopStmt.interval().expression(1).toAst()
-                val sequence = forLoopStmt.instructionList().toAst()
-                return ForLoop(Variable(loopVariable), Interval(lowerLimit, higherLimit), sequence, null)
-            }
+        forLoop() != null -> {
+            val forLoopStmt = forLoop()
+            val loopVariable = forLoopStmt.PROPERTYID().text
+            val lowerLimit = forLoopStmt.interval().expression(0).toAst()
+            val higherLimit = forLoopStmt.interval().expression(1).toAst()
+            val sequence = forLoopStmt.instructionList().toAst()
+            return ForLoop(Variable(loopVariable), Interval(lowerLimit, higherLimit), sequence)
+        }
 
-            else -> {
-                throw IllegalArgumentException("Invalid Control Structure")
-            }
+        else -> {
+            throw IllegalArgumentException("Invalid Control Structure")
         }
     }
-
-
-
+}
 
 
 fun main() {
@@ -273,6 +276,6 @@ fun main() {
     val script = parser.script()
     println(script.toAst())
 }
-*/
+
 
 

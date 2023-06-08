@@ -30,7 +30,9 @@ dimension: expression PROPERTYSEPARATOR expression;
 
 background: ID;
 
-declaration : id=PROPERTYID  (expression|(r g b));
+declaration : id=PROPERTYID  decvalue;
+
+decvalue : expression|(r g b);
 
 constant: constid=ID ':' constval=value;
 
