@@ -28,6 +28,7 @@ fun main() {
 
 
 
+
         ),
         listOf(
             Background("Red"),
@@ -41,6 +42,7 @@ fun main() {
             IfElse(
                 BinaryExpression(Literal(3), Operator.EQUAL, Literal(3)),
                 listOf(
+
                     Square(
                         Localization(
                             Literal(200),
@@ -66,7 +68,15 @@ fun main() {
                     )
                 )
             ),
+            Line(
+                Color(
+                    Literal(0),
+                    Literal(0),
+                    Literal(255)
+                )
+            ),
             FigureColor("Green"),
+            FigureColor("Red"),
             Ellipse(
                 Localization(
                     Literal(500),
