@@ -1,13 +1,14 @@
 package instructions
 
 import types.Color
+import types.Type
 
 open class Declaration(
 
 ):Instruction
 
 class FigureColor(
-    val color: String
+    val color: Type,
 ): Declaration() {
     override fun toString(): String {
         return "figureColor(color: $color)"
@@ -15,7 +16,7 @@ class FigureColor(
 }
 
 class Line(
-    val color: Color,
+    val color: Type,
 ): Declaration() {
     override fun toString(): String {
         return "line(color: $color)"
@@ -23,7 +24,7 @@ class Line(
 }
 
 class Fill(
-    val color: String
+    val color: Type,
 ): Declaration() {
     override fun toString(): String {
         return "fill(color: $color)"

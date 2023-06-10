@@ -132,7 +132,7 @@ fun DrawScriptParser.PropertyContext.toAst(): Property {
         }
 
         "background" -> {
-            Background(PROPERTYID().text)
+            Background(Text(PROPERTYID().text))
         }
 
         else -> throw Exception("Property not found: $propid")
@@ -169,7 +169,7 @@ fun DrawScriptParser.InstructionContext.toAst(): Instruction {
 fun DrawScriptParser.DeclarationContext.toAst(): Declaration {
     return when {
         id.text.equals("color") -> {
-            FigureColor(decvalue().text)
+            FigureColor(Text(decvalue().text))
         }
 
         id.text.equals("line") -> {
@@ -183,7 +183,7 @@ fun DrawScriptParser.DeclarationContext.toAst(): Declaration {
         }
 
         id.text.equals("fill") -> {
-            Fill(decvalue().text)
+            Fill(Text(decvalue().text))
         }
 
         else -> throw IllegalArgumentException("Invalid Declaration")
