@@ -16,41 +16,43 @@ open class Interpreter(
 ) {
 
     fun run() {
-        val memory = mutableMapOf<String, Any>()
-        for (constant in script.constants) {
-            when (constant.value) {
-                is types.Integer -> {
-                    memory[constant.identity] = calculateExpression(constant.value.N, memory)
-                }
+        if (script.validate()) {
+            val memory = mutableMapOf<String, Any>()
+            for (constant in script.constants) {
+                when (constant.value) {
+                    is types.Integer -> {
+                        memory[constant.identity] = calculateExpression(constant.value.N, memory)
+                    }
 
-                is Color -> {
-                    val colorValue = calculateColorValue(constant.value, memory)
-                    memory[constant.identity] = colorValue
-                }
-            }
-        }
-        for (property in script.properties) {
-            when (property) {
-                is Background -> {
-                    val colorValue = memory[property.color]
-                    if (colorValue != null) {
-                        memory["background"] = colorValue
-                    } else {
-                        // Handle case when color value is not found in memory
-                        // You can throw an exception or handle it according to your requirements
+                    is Color -> {
+                        val colorValue = calculateColorValue(constant.value, memory)
+                        memory[constant.identity] = colorValue
                     }
                 }
+            }
+            for (property in script.properties) {
+                when (property) {
+                    is Background -> {
+                        val colorValue = memory[property.color]
+                        if (colorValue != null) {
+                            memory["background"] = colorValue
+                        } else {
+                            // Handle case when color value is not found in memory
+                            // You can throw an exception or handle it according to your requirements
+                        }
+                    }
 
-                is Dimension -> {
-                    val width = calculateExpression(property.width, memory)
-                    val height = calculateExpression(property.height, memory)
-                    memory["dimension_width"] = width
-                    memory["dimension_height"] = height
+                    is Dimension -> {
+                        val width = calculateExpression(property.width, memory)
+                        val height = calculateExpression(property.height, memory)
+                        memory["dimension_width"] = width
+                        memory["dimension_height"] = height
+                    }
                 }
             }
+            executeInstructions(script.instructions, memory)
+            setupWindow(memory)
         }
-        executeInstructions(script.instructions, memory)
-        setupWindow(memory)
     }
 
     private fun executeInstructions(instructions: List<Instruction>, memory: MutableMap<String, Any>) {
@@ -154,14 +156,12 @@ open class Interpreter(
                             for (value in initial until end) {
 
                                 memory[instruction.initialCharacter.valId] = value
-                                //   println("l is  ${memory["l"]}")
-                                // println("c is  ${memory["c"]}")
+
                                 executeInstructions(instruction.sequence, memory)
                             }
                         }
                     }
                 }
-                // Handle other types of instructions if needed
             }
         }
     }

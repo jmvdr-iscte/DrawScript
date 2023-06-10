@@ -1,6 +1,5 @@
 package controlstructures
 
-import SequenceIterator
 import expressions.Variable
 import instructions.Instruction
 import types.Interval
