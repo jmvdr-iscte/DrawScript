@@ -6,6 +6,8 @@ import instructions.*
 import properties.Background
 import properties.Dimension
 import types.Color
+import types.Text
+import types.Type
 import java.awt.Graphics
 import java.util.*
 import javax.swing.JComponent
@@ -32,7 +34,7 @@ open class Interpreter(
         for (property in script.properties) {
             when (property) {
                 is Background -> {
-                    val colorValue = memory[property.color]
+                    val colorValue = memory[calculateType(property.color)]
                     if (colorValue != null) {
                         memory["background"] = colorValue
                     } else {
@@ -53,20 +55,48 @@ open class Interpreter(
         setupWindow(memory)
     }
 
+
+    private fun calculateType(type: Type): Any? {
+        return when (type) {
+
+            is Text -> {
+                type.textInput
+            }
+            is Color -> {
+                type
+            }
+
+            else -> {
+                null
+            }
+        }
+    }
+
     private fun executeInstructions(instructions: List<Instruction>, memory: MutableMap<String, Any>) {
         for (instruction in instructions) {
             when (instruction) {
                 is Declaration -> {
                     when (instruction) {
                         is FigureColor -> {
-                            val colorValue = memory[instruction.color]
-                            if (colorValue != null) {
-                                memory["figureColor"] = colorValue
+                            when(instruction.color) {
+                                is Color -> {
+                                    val colorValue = calculateColorValue(instruction.color, memory)
+                                    if (colorValue != null) {
+                                        memory["figureColor"] = colorValue
+                                    }
+                                }
+                                is Text -> {
+                                    val colorValue = memory[calculateType(instruction.color)]
+                                    if (colorValue != null) {
+                                        memory["figureColor"] = colorValue
+                                    }
+                                }
                             }
+
                         }
 
                         is Line -> {
-                            val lineColor = calculateColorValue(instruction.color, memory)
+                            val lineColor = calculateColorValue(calculateType(instruction.color) as Color, memory)
                             if (lineColor != null) {
                                 memory["lineColor"] = lineColor
                             }
@@ -75,7 +105,7 @@ open class Interpreter(
 
                         is Fill -> {
                             val Id = generateUniqueFigureId()
-                            val colorValue = retrieveColorFromMemory(instruction.color, memory)
+                            val colorValue = retrieveColorFromMemory(calculateType(instruction.color) as String, memory)
                             memory[Id] = colorValue
 
                         }

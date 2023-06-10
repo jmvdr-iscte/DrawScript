@@ -24,7 +24,7 @@ fun main() {
 
         ),
         listOf(
-            Background("Red"),
+            Background(Text("Red")),
             Dimension(
                 Variable("R"),
                 BinaryExpression(Variable("N"), Operator.PLUS, Variable("R"))
@@ -35,7 +35,7 @@ fun main() {
 
             ForLoop(
                 Variable("a"), Interval(Literal(0), Literal(5)), listOf(
-                    FigureColor("Green"),
+
                     Ellipse(
 
                         Localization(
@@ -45,6 +45,7 @@ fun main() {
                         Literal(20),
                         Literal(15)
                     ),
+
                 )
             ),
 
@@ -55,7 +56,9 @@ fun main() {
                     Literal(255)
                 )
             ),
-            FigureColor("Green"),
+
+            FigureColor(Color(Literal(0), Literal(100), Literal(0))),
+            FigureColor(Color(Literal(0), Literal(255), Literal(0))),
             
             Ellipse(
                 Localization(
@@ -65,9 +68,22 @@ fun main() {
                 Literal(200),
                 Literal(100)
             ),
+            Square(
+                Localization(
+                    Literal(100),
+                    Literal(100)
+                ),
+                Literal(100)
+            ),
+            Square(
+                Localization(
+                    Literal(201),
+                    Literal(100)
+                ),
+                Literal(100)
+            ),
 
-            FigureColor("Green"),
-            Fill("White"),
+            Fill(Text("White")),
             Circle(
                 Localization(
                     Literal(800),
@@ -76,7 +92,7 @@ fun main() {
                 Literal(300)
             ),
 
-            Fill("Black"),
+            Fill(Text("Black")),
 
             Circle(
                 Localization(
