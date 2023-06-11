@@ -1,6 +1,7 @@
 import controlstructures.ControlStructure
 import controlstructures.ForLoop
 import controlstructures.IfElse
+import errors.WrongReference
 import expressions.*
 import instructions.*
 import properties.Background
@@ -27,30 +28,31 @@ open class Interpreter(
                     }
 
                     is Color -> {
-                        val colorValue = calculateColorValue(constant.value, memory)
+                        val colorValue = constant.value
                         memory[constant.identity] = colorValue
                     }
                 }
             }
 
-        }
-        for (property in script.properties) {
-            when (property) {
-                is Background -> {
-                    val colorValue = memory[calculateType(property.color)]
-                    if (colorValue != null) {
-                        memory["background"] = colorValue
-                    } else {
-                        // Handle case when color value is not found in memory
-                        // You can throw an exception or handle it according to your requirements
+            if (script.properties != null) {
+                for (property in script.properties) {
+                    when (property) {
+                        is Background -> {
+                            val colorValue = memory[calculateType(property.color)]
+                            println(colorValue)
+                            if (colorValue != null) {
+                                memory["background"] = colorValue
+                            }
+                        }
 
-                    }
+                        is Dimension -> {
 
-                    is Dimension -> {
-                        val width = calculateExpression(property.width, memory)
-                        val height = calculateExpression(property.height, memory)
-                        memory["dimension_width"] = width
-                        memory["dimension_height"] = height
+                            val width = calculateExpression(property.width, memory)
+                            val height = calculateExpression(property.height, memory)
+
+                            memory["dimension_width"] = width
+                            memory["dimension_height"] = height
+                        }
                     }
                 }
             }
@@ -58,269 +60,261 @@ open class Interpreter(
             setupWindow(memory)
         }
     }
+}
 
 
-    private fun calculateType(type: Type): Any? {
-        return when (type) {
+private fun calculateType(type: Type): Any {
+    return when (type) {
 
-            is Text -> {
-                type.textInput
-            }
-            is Color -> {
-                type
-            }
+        is Text -> {
+            type.textInput
+        }
 
-            else -> {
-                null
-            }
+        is Color -> {
+            type
+        }
+
+        else -> {
+            throw WrongReference(" wrong type reference", null)
         }
     }
+}
 
-    private fun executeInstructions(instructions: List<Instruction>, memory: MutableMap<String, Any>) {
-        for (instruction in instructions) {
-            when (instruction) {
-                is Declaration -> {
-                    when (instruction) {
-                        is FigureColor -> {
-                            when(instruction.color) {
-                                is Color -> {
-                                    val colorValue = calculateColorValue(instruction.color, memory)
-                                    if (colorValue != null) {
-                                        memory["figureColor"] = colorValue
-                                    }
-                                }
-                                is Text -> {
-                                    val colorValue = memory[calculateType(instruction.color)]
-                                    if (colorValue != null) {
-                                        memory["figureColor"] = colorValue
-                                    }
+private fun executeInstructions(instructions: List<Instruction>, memory: MutableMap<String, Any>) {
+    for (instruction in instructions) {
+        when (instruction) {
+            is Declaration -> {
+                when (instruction) {
+                    is FigureColor -> {
+                        when (instruction.color) {
+                            is Color -> {
+                                val colorValue = instruction.color
+                                if (colorValue != null) {
+                                    memory["figureColor"] = colorValue
                                 }
                             }
 
-                        }
+                            is Text -> {
+                                val colorValue = memory[calculateType(instruction.color)]
+                                if (colorValue != null) {
+                                    memory["figureColor"] = colorValue
+                                }
+                            }
 
-                        is Line -> {
-                            val lineColor = calculateColorValue(calculateType(instruction.color) as Color, memory)
-                            if (lineColor != null) {
-                                memory["lineColor"] = lineColor
+                            else -> {
+                                throw WrongReference("Wrong reference on ${instruction.color}", null)
                             }
                         }
 
+                    }
 
-                        is Fill -> {
-                            val Id = generateUniqueFigureId()
-                            val colorValue = retrieveColorFromMemory(calculateType(instruction.color) as String, memory)
-                            memory[Id] = colorValue
+                    is Line -> {
+                        val lineColor = calculateType(instruction.color) as Color
+                        memory["lineColor"] = lineColor
+                    }
 
-                        }
-                        // Handle other types of declarations if needed
+
+                    is Fill -> {
+                        val Id = generateUniqueFigureId()
+                        val colorValue = retrieveColorFromMemory(calculateType(instruction.color) as String, memory)
+                        memory[Id] = colorValue
+
                     }
                 }
+            }
 
-                is Figure -> {
-                    when (instruction) {
-                        is Square -> {
-                            val localization = instruction.localization
-                            val figureId = generateUniqueFigureId()
-                            val figureMemory = mutableMapOf<String, Any>(
-                                "localizationX" to calculateExpression(localization.xValue, memory),
-                                "localizationY" to calculateExpression(localization.yValue, memory),
-                                "sideLength" to calculateExpression(instruction.sideLength, memory)
-                            )
-                            memory[figureId] = figureMemory
-                        }
-
-                        is Rectangle -> {
-                            val localization = instruction.localization
-                            val figureId = generateUniqueFigureId()
-                            val figureMemory = mutableMapOf<String, Any>(
-                                "localizationX" to calculateExpression(localization.xValue, memory),
-                                "localizationY" to calculateExpression(localization.yValue, memory),
-                                "width" to calculateExpression(instruction.width, memory),
-                                "height" to calculateExpression(instruction.height, memory)
-                            )
-
-                            memory[figureId] = figureMemory
-                        }
-
-                        is Ellipse -> {
-                            val localization = instruction.localization
-                            val figureId = generateUniqueFigureId()
-
-                            val figureMemory = mutableMapOf<String, Any>(
-                                "localizationX" to calculateExpression(localization.xValue, memory),
-                                "localizationY" to calculateExpression(localization.yValue, memory),
-                                "horizontalRadius" to calculateExpression(instruction.horizontalRadius, memory),
-                                "verticalRadius" to calculateExpression(instruction.verticalRadius, memory)
-                            )
-                            memory[figureId] = figureMemory
-
-                        }
-
-                        is Circle -> {
-                            val localization = instruction.localization
-                            val figureId = generateUniqueFigureId()
-                            val figureMemory = mutableMapOf<String, Any>(
-                                "localizationX" to calculateExpression(localization.xValue, memory),
-                                "localizationY" to calculateExpression(localization.yValue, memory),
-                                "radius" to calculateExpression(instruction.radius, memory)
-                            )
-                            memory[figureId] = figureMemory
-                        }
-                        // Handle other types of figures if needed
+            is Figure -> {
+                when (instruction) {
+                    is Square -> {
+                        val localization = instruction.localization
+                        val figureId = generateUniqueFigureId()
+                        val figureMemory = mutableMapOf<String, Any>(
+                            "localizationX" to calculateExpression(localization.xValue, memory),
+                            "localizationY" to calculateExpression(localization.yValue, memory),
+                            "sideLength" to calculateExpression(instruction.sideLength, memory)
+                        )
+                        memory[figureId] = figureMemory
                     }
+
+                    is Rectangle -> {
+                        val localization = instruction.localization
+                        val figureId = generateUniqueFigureId()
+                        val figureMemory = mutableMapOf<String, Any>(
+                            "localizationX" to calculateExpression(localization.xValue, memory),
+                            "localizationY" to calculateExpression(localization.yValue, memory),
+                            "width" to calculateExpression(instruction.width, memory),
+                            "height" to calculateExpression(instruction.height, memory)
+                        )
+
+                        memory[figureId] = figureMemory
+                    }
+
+                    is Ellipse -> {
+                        val localization = instruction.localization
+                        val figureId = generateUniqueFigureId()
+
+                        val figureMemory = mutableMapOf<String, Any>(
+                            "localizationX" to calculateExpression(localization.xValue, memory),
+                            "localizationY" to calculateExpression(localization.yValue, memory),
+                            "horizontalRadius" to calculateExpression(instruction.horizontalRadius, memory),
+                            "verticalRadius" to calculateExpression(instruction.verticalRadius, memory)
+                        )
+                        memory[figureId] = figureMemory
+
+                    }
+
+                    is Circle -> {
+                        val localization = instruction.localization
+                        val figureId = generateUniqueFigureId()
+                        val figureMemory = mutableMapOf<String, Any>(
+                            "localizationX" to calculateExpression(localization.xValue, memory),
+                            "localizationY" to calculateExpression(localization.yValue, memory),
+                            "radius" to calculateExpression(instruction.radius, memory)
+                        )
+                        memory[figureId] = figureMemory
+                    }
+                    // Handle other types of figures if needed
                 }
+            }
 
-                is ControlStructure -> {
-                    when (instruction) {
-                        is IfElse -> {
-                            val guardResult = calculateExpression(instruction.guard, memory)
-                            val sequenceToExecute =
-                                if (guardResult == 0) instruction.sequence else instruction.alternative
-                            sequenceToExecute?.let { sequence ->
-                                executeInstructions(sequence, memory)
-                            }
+            is ControlStructure -> {
+                when (instruction) {
+                    is IfElse -> {
+                        val guardResult = calculateExpression(instruction.guard, memory)
+                        val sequenceToExecute =
+                            if (guardResult == 0) instruction.sequence else instruction.alternative
+                        sequenceToExecute?.let { sequence ->
+                            executeInstructions(sequence, memory)
                         }
+                    }
 
-                        is ForLoop -> {
-                            val initial = calculateExpression(instruction.interval.lowerLimit, memory)
-                            val end = calculateExpression(instruction.interval.higherLimit, memory)
-                            for (value in initial until end) {
+                    is ForLoop -> {
+                        val initial = calculateExpression(instruction.interval.lowerLimit, memory)
+                        val end = calculateExpression(instruction.interval.higherLimit, memory)
+                        for (value in initial until end) {
 
-                                memory[instruction.initialCharacter.valId] = value
+                            memory[instruction.initialCharacter.valId] = value
 
-                                executeInstructions(instruction.sequence, memory)
-                            }
+                            executeInstructions(instruction.sequence, memory)
                         }
                     }
                 }
             }
         }
     }
+}
 
-    private fun generateUniqueFigureId(): String {
-        // Generate a unique identifier for each figure instance
-        return UUID.randomUUID().toString()
+private fun generateUniqueFigureId(): String {
+    // Generate a unique identifier for each figure instance
+    return UUID.randomUUID().toString()
+}
+
+// Create an instance of DrawScriptSkeleton and set the background color if available
+private fun setupWindow(memory: MutableMap<String, Any>) {
+    val drawScriptSkeleton = DrawScriptSkeleton()
+    val backgroundColorValue = memory["background"]
+    val colorFigures = memory["figureColor"]
+    val lineColor = memory["lineColor"]
+
+
+    if (colorFigures != null) {
+        drawScriptSkeleton.colorFigures = retrieveColorFromMemory("figureColor", memory)
+        drawScriptSkeleton.colorCopy = retrieveColorFromMemory("figureColor", memory)
     }
 
-    // Create an instance of DrawScriptSkeleton and set the background color if available
-    private fun setupWindow(memory: MutableMap<String, Any>) {
-        val drawScriptSkeleton = DrawScriptSkeleton()
-        val backgroundColorValue = memory["background"]
-        val colorFigures = memory["figureColor"]
-        val lineColor = memory["lineColor"]
+    if (lineColor != null) {
+        drawScriptSkeleton.lineColor = retrieveColorFromMemory("lineColor", memory)
+    }
 
-
-        if (colorFigures != null) {
-            drawScriptSkeleton.colorFigures = retrieveColorFromMemory("figureColor", memory)
-            drawScriptSkeleton.colorCopy = retrieveColorFromMemory("figureColor", memory)
-        }
-
-        if (lineColor != null) {
-            drawScriptSkeleton.lineColor = retrieveColorFromMemory("lineColor", memory)
-        }
-
-        if (backgroundColorValue != null) {
-            val backgroundColor = retrieveColorFromMemory("background", memory)
-            drawScriptSkeleton.customBackground = backgroundColor
-
-        }
-
-        drawScriptSkeleton.memory = memory
-
-
-        // Perform other actions with the memory values if needed
-
-        // Display the DrawScriptSkeleton component
-        val frame = JFrame("DrawScript")
-        frame.contentPane.add(drawScriptSkeleton)
-        frame.defaultCloseOperation = JFrame.EXIT_ON_CLOSE
-        val dimensionWidth = memory["dimension_width"]?.toString()?.toIntOrNull() ?: 800
-        val dimensionHeight = memory["dimension_height"]?.toString()?.toIntOrNull() ?: 600
-        frame.setSize(dimensionWidth, dimensionHeight)
-        // for test proposes
-        //frame.setSize(dimensionWidth+17, dimensionHeight+40)
-        frame.isVisible = true
+    if (backgroundColorValue != null) {
+        val backgroundColor = retrieveColorFromMemory("background", memory)
+        drawScriptSkeleton.customBackground = backgroundColor
 
     }
 
-
-    private fun calculateColorValue(color: Color, memory: MutableMap<String, Any>): Int {
-        val rValue = calculateExpression(color.rValue, memory)
-        val gValue = color.gValue?.let { calculateExpression(it, memory) } ?: 0
-        val bValue = color.bValue?.let { calculateExpression(it, memory) } ?: 0
-
-        // Perform any necessary calculations to convert color components to an integer value
-        return (rValue and 0xFF) shl 16 or ((gValue and 0xFF) shl 8) or (bValue and 0xFF)
-    }
-
-    private fun calculateExpression(expression: Expression, memory: MutableMap<String, Any>): Int {
-        return when (expression) {
-            is Variable -> memory[expression.valId]!! as Int
-            is Literal -> expression.value
-            is BinaryExpression -> {
-                val left = calculateExpression(expression.left, memory)
-                val right = calculateExpression(expression.right, memory)
-                when (expression.operator) {
-                    Operator.PLUS -> left + right
-                    Operator.MINUS -> left - right
-                    Operator.TIMES -> left * right
-                    Operator.DIVIDE -> left / right
-                    Operator.MOD -> {
-                        println("$left % $right")
-                        left % right
-                    }
-
-                    Operator.EQUAL -> {
-                        if (left == right) {
-                            0
-                        } else {
-                            1
-                        }
-
-                    }
-
-                    Operator.MORE -> {
-                        if (left > right) {
-                            0
-                        } else {
-                            1
-                        }
-                    }
-
-                    Operator.LESS -> {
-                        if (left < right) {
-                            0
-                        } else {
-                            1
-                        }
-                    }
-
-                }
-            }
+    drawScriptSkeleton.memory = memory
 
 
-            else -> 0
-        }
-    }
+    // Perform other actions with the memory values if needed
 
-
-    private fun retrieveColorFromMemory(key: String, memory: MutableMap<String, Any>): java.awt.Color {
-        val colorValue: Int = memory[key] as? Int ?: throw IllegalArgumentException("Color value not found in memory")
-
-        // Extract the individual RGB components from the color value using bit shifting and masking
-        val rValue = (colorValue shr 16) and 0xFF
-        val gValue = (colorValue shr 8) and 0xFF
-        val bValue = colorValue and 0xFF
-
-        // Create a Color object with the extracted RGB values
-        return java.awt.Color(rValue, gValue, bValue)
-    }
+    // Display the DrawScriptSkeleton component
+    val frame = JFrame("DrawScript")
+    frame.contentPane.add(drawScriptSkeleton)
+    frame.defaultCloseOperation = JFrame.EXIT_ON_CLOSE
+    val dimensionWidth = memory["dimension_width"]?.toString()?.toIntOrNull() ?: 800
+    val dimensionHeight = memory["dimension_height"]?.toString()?.toIntOrNull() ?: 600
+    frame.setSize(dimensionWidth, dimensionHeight)
+    // for test proposes
+    //frame.setSize(dimensionWidth+17, dimensionHeight+40)
+    frame.isVisible = true
 
 }
 
+private fun calculateExpression(expression: Any, memory: MutableMap<String, Any>): Int {
+
+    return when (expression) {
+        is Variable -> memory[expression.valId]!! as Int
+        is Literal -> expression.value
+        is BinaryExpression -> {
+            val left = calculateExpression(expression.left, memory)
+            val right = calculateExpression(expression.right, memory)
+            when (expression.operator) {
+                Operator.PLUS -> left + right
+                Operator.MINUS -> left - right
+                Operator.TIMES -> left * right
+                Operator.DIVIDE -> left / right
+                Operator.MOD -> {
+                    println("$left % $right")
+                    left % right
+                }
+
+                Operator.EQUAL -> {
+                    if (left == right) {
+                        0
+                    } else {
+                        1
+                    }
+
+                }
+
+                Operator.MORE -> {
+                    if (left > right) {
+                        0
+                    } else {
+                        1
+                    }
+                }
+
+                Operator.LESS -> {
+                    if (left < right) {
+                        0
+                    } else {
+                        1
+                    }
+                }
+
+            }
+        }
+
+        else -> 0
+    }
+}
+
+
+private fun retrieveColorFromMemory(key: String, memory: MutableMap<String, Any>): java.awt.Color {
+    val colorValue: Color = memory[key] as? Color ?: throw WrongReference("color $key not found in memory", null)
+
+    val rValue = calculateExpression(colorValue.rValue, memory)
+    val gValue = calculateExpression(colorValue.gValue!!, memory)
+    val bValue = calculateExpression(colorValue.bValue!!, memory)
+
+
+    return java.awt.Color(rValue, gValue, bValue)
+}
+
+
 class DrawScriptSkeleton : JComponent() {
-    var customBackground: java.awt.Color? = null
+    var customBackground: java.awt.Color? = java.awt.Color(255, 0, 0)
     var colorFigures: java.awt.Color? = java.awt.Color(0, 0, 0)
     var memory: MutableMap<String, Any> = mutableMapOf()
     var lineColor: java.awt.Color? = null
@@ -330,8 +324,7 @@ class DrawScriptSkeleton : JComponent() {
     override fun paintComponent(g: Graphics) {
 
         super.paintComponent(g)
-
-        // Set the custom background color if available
+        println("this is a custom background $customBackground")
         customBackground?.let {
             g.color = it
             g.fillRect(0, 0, width, height)
@@ -435,11 +428,10 @@ class DrawScriptSkeleton : JComponent() {
 
                 }
             }
-            //val mutableFigureData = figureData as? MutableMap<String, Any>
 
         }
     }
-
 }
+
 
 

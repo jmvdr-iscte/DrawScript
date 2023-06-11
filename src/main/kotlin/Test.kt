@@ -14,7 +14,7 @@ fun main() {
         listOf(
             Constant("N", types.Integer(Literal(600))),
             Constant("R", types.Integer(Literal(1600))),
-            Constant("Red", Color(Literal(255), null, null)),
+            Constant("Red", Color(Literal(255), Literal(0), Literal(0))),
             Constant("White", Color(Literal(255), Literal(255), Literal(255))),
             Constant("Green", Color(Literal(0), Literal(255), Literal(0))),
             Constant("Black", Color(Literal(0), Literal(0), Literal(0)))

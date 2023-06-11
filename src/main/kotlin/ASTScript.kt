@@ -11,6 +11,11 @@ import properties.Property
 import types.*
 
 fun DrawScriptParser.ScriptContext.toAst(): Script {
+    if (propertyList() == null) {
+        return Script(this.constantList().toAst(), null, this.instructionList().toAst())
+    }
+    println(" its not null")
+
     return Script(this.constantList().toAst(), this.propertyList().toAst(), this.instructionList().toAst())
 }
 
@@ -50,7 +55,11 @@ fun DrawScriptParser.ValueContext.toAst(): Type {
         r() != null && g() != null -> {
             val rValue = r().COLOR()
             val gValue = g().COLOR()
-            return Color(Literal(parseColor(rValue.text)), Literal(parseColor(gValue.text)), Literal(0))
+            return Color(
+                Literal(parseColor(rValue.text)),
+                Literal(parseColor(gValue.text)),
+                Literal(parseColor(rValue.text))
+            )
         }
 
         else -> {
@@ -106,6 +115,18 @@ fun DrawScriptParser.ExpressionContext.toAst(): Expression {
             BinaryExpression(left, Operator.EQUAL, right)
         }
 
+        LESS() != null -> {
+            val left = expression(0).toAst()
+            val right = expression(1).toAst()
+            BinaryExpression(left, Operator.LESS, right)
+        }
+
+        LARGER() != null -> {
+            val left = expression(0).toAst()
+            val right = expression(1).toAst()
+            BinaryExpression(left, Operator.MORE, right)
+        }
+
         else -> {
             throw IllegalArgumentException("Invalid Operator")
         }
@@ -116,7 +137,7 @@ fun DrawScriptParser.ExpressionContext.toAst(): Expression {
 fun DrawScriptParser.PropertyListContext.toAst(): List<Property> {
     return when (this.propertyList()) {
         null -> listOf(this.property().toAst())
-        else -> propertyList().toAst() + listOf(this.property().toAst())
+        else -> propertyList().toAst().plus(listOf(this.property().toAst()))
     }
 }
 
@@ -132,7 +153,8 @@ fun DrawScriptParser.PropertyContext.toAst(): Property {
         }
 
         "background" -> {
-            Background(Text(PROPERTYID().text))
+            println(background().ID().text)
+            Background(Text(background().ID().text))
         }
 
         else -> throw Exception("Property not found: $propid")
@@ -253,7 +275,7 @@ fun DrawScriptParser.ControlStructureContext.toAst(): Instruction {
 fun main() {
     val input = "N: 8\n" +
             "SIDE: 40\n" +
-            "MARGIN: 0\n" +
+            "MARGIN: 5\n" +
             "BLACK: |0|\n" +
             "WHITE: |255|\n" +
             "GRAY: |128|\n" +
@@ -278,7 +300,6 @@ fun main() {
     val lexer = DrawScriptLexer(CharStreams.fromString(input))
     val parser = DrawScriptParser(CommonTokenStream(lexer))
     val script = parser.script()
-    print(script.toAst())
     val interpreter = Interpreter(script.toAst())
     interpreter.run()
 }

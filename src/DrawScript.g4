@@ -1,6 +1,6 @@
 grammar DrawScript;
 
-script: constantList delimiter propertyList delimiter instructionList;
+script: constantList delimiter (propertyList delimiter)? instructionList;
 
 constantList: constant | constantList constant;
 
@@ -44,6 +44,9 @@ expression: ID|N|PROPERTYID|
                 expression PLUS expression|
                 expression MINUS expression|
                 expression MOD expression|
+                expression LARGER expression|
+                expression LESS expression|
+
                 expression EQUALS expression;
 
 
@@ -67,6 +70,8 @@ TIMES:'*';
 DIVIDE:'/';
 MOD: '%';
 EQUALS: '=';
+LARGER: '>';
+LESS: '<';
 WS: [ \t\r\n]+ -> skip;
 PROPERTYSEPARATOR: '~';
 ENDINSTRUCTION: '_';
