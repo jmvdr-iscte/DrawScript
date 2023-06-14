@@ -14,7 +14,6 @@ fun DrawScriptParser.ScriptContext.toAst(): Script {
     if (propertyList() == null) {
         return Script(this.constantList().toAst(), null, this.instructionList().toAst())
     }
-    println(" its not null")
 
     return Script(this.constantList().toAst(), this.propertyList().toAst(), this.instructionList().toAst())
 }
@@ -271,38 +270,6 @@ fun DrawScriptParser.ControlStructureContext.toAst(): Instruction {
     }
 }
 
-
-fun main() {
-    val input = "N: 8\n" +
-            "SIDE: 40\n" +
-            "MARGIN: 5\n" +
-            "BLACK: |0|\n" +
-            "WHITE: |255|\n" +
-            "GRAY: |128|\n" +
-            "---\n" +
-            "dimension: N*SIDE + MARGIN*2 ~ N*SIDE + MARGIN*2\n" +
-            "background: GRAY\n" +
-            "---\n" +
-            "color BLACK\n" +
-            "rectangle MARGIN,MARGIN N*SIDE ~ N*SIDE\n" +
-            "for l in [0,N[\n" +
-            "  for c in [0,N[\n" +
-            "    if (l + c) % 2 = 0\n" +
-            "      fill WHITE\n" +
-            "    else\n" +
-            "      fill BLACK\n" +
-            "    _\n" +
-            "    square c * SIDE + MARGIN,l * SIDE + MARGIN SIDE\n" +
-            "  _\n" +
-            "_\n" +
-            "line |0|0|255|\n"
-
-    val lexer = DrawScriptLexer(CharStreams.fromString(input))
-    val parser = DrawScriptParser(CommonTokenStream(lexer))
-    val script = parser.script()
-    val interpreter = Interpreter(script.toAst())
-    interpreter.run()
-}
 
 
 

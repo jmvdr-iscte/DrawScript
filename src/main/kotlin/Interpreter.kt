@@ -39,7 +39,6 @@ open class Interpreter(
                     when (property) {
                         is Background -> {
                             val colorValue = memory[calculateType(property.color)]
-                            println(colorValue)
                             if (colorValue != null) {
                                 memory["background"] = colorValue
                             }
@@ -173,7 +172,8 @@ private fun executeInstructions(instructions: List<Instruction>, memory: Mutable
                         )
                         memory[figureId] = figureMemory
                     }
-                    // Handle other types of figures if needed
+
+                    else -> throw Exception("Invalid figure")
                 }
             }
 
@@ -205,11 +205,9 @@ private fun executeInstructions(instructions: List<Instruction>, memory: Mutable
 }
 
 private fun generateUniqueFigureId(): String {
-    // Generate a unique identifier for each figure instance
     return UUID.randomUUID().toString()
 }
 
-// Create an instance of DrawScriptSkeleton and set the background color if available
 private fun setupWindow(memory: MutableMap<String, Any>) {
     val drawScriptSkeleton = DrawScriptSkeleton()
     val backgroundColorValue = memory["background"]
@@ -235,9 +233,6 @@ private fun setupWindow(memory: MutableMap<String, Any>) {
     drawScriptSkeleton.memory = memory
 
 
-    // Perform other actions with the memory values if needed
-
-    // Display the DrawScriptSkeleton component
     val frame = JFrame("DrawScript")
     frame.contentPane.add(drawScriptSkeleton)
     frame.defaultCloseOperation = JFrame.EXIT_ON_CLOSE
@@ -264,7 +259,6 @@ private fun calculateExpression(expression: Any, memory: MutableMap<String, Any>
                 Operator.TIMES -> left * right
                 Operator.DIVIDE -> left / right
                 Operator.MOD -> {
-                    println("$left % $right")
                     left % right
                 }
 
@@ -324,7 +318,6 @@ class DrawScriptSkeleton : JComponent() {
     override fun paintComponent(g: Graphics) {
 
         super.paintComponent(g)
-        println("this is a custom background $customBackground")
         customBackground?.let {
             g.color = it
             g.fillRect(0, 0, width, height)
